@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Weeping Order of the Serpent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- New: Add Tone.js for sound generation -->
+    <script src="https://unpkg.com/tone@14.7.58/build/Tone.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d0d0d;
+            color: #d1d5db;
+            padding-top: 64px;
+            /* Hide the default cursor to show the particle effect */
+            cursor: none;
+            /* New: Disable text selection for the entire body */
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none;    /* Firefox */
+            -ms-user-select: none;     /* IE/Edge */
+            user-select: none;         /* Standard */
+        }
+        /* New: Re-enable text selection for form fields */
+        input, textarea {
+            -webkit-user-select: auto;
+            -moz-user-select: auto;
+            -ms-user-select: auto;
+            user-select: auto;
+        }
+        .text-weeping-gold {
+            color: #f1c40f; /* Brighter gold color for main elements */
+        }
+        .border-weeping-gold {
+            border-color: #f1c40f;
+        }
+        .btn-weeping-gold {
+            background-color: #f1c40f;
+            color: #0d0d0d;
+            /* Subtle text shadow for a more ethereal look */
+            text-shadow: 0 0 5px #f1c40f;
+        }
+        .btn-weeping-gold:hover {
+            background-color: #e0b80d;
+        }
+        /* Adjusted section heights for better flow */
+        .section {
+            padding-top: 64px;
+            padding-bottom: 64px;
+        }
+        .scroll-down {
+            animation: bounce 2s infinite;
+        }
+        /* New CSS class for the glow effect on the main heading only */
+        .main-heading-glow {
+            text-shadow: 0 0 10px rgba(241, 196, 15, 0.7), 0 0 20px rgba(241, 196, 15, 0.5);
+        }
+        /* Style for all other headings to make them less bright yellow */
+        h2, h3 {
+            color: #d8c37d; /* A more muted, subtle gold color */
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        /* New: CSS animation for the mask to turn side to side */
+        @keyframes mask-turn {
+            0%, 100% {
+                transform: rotateY(0deg);
+            }
+            50% {
+                transform: rotateY(10deg);
+            }
+        }
+        .animate-mask-turn {
+            animation: mask-turn 8s ease-in-out infinite;
+        }
+        /* Modal styles for the Serpent's Coil section */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #1c1c1c;
+            padding: 40px;
+            border-radius: 10px;
+            border: 2px solid #f1c40f;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(241, 196, 15, 0.5);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .close-btn {
+            color: #f1c40f;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        /* New style for the sorrow counter pulse effect */
+        @keyframes pulse-gold {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(241, 196, 15, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 10px 5px rgba(241, 196, 15, 0.2);
+            }
+        }
+        .sorrow-pulse {
+            animation: pulse-gold 2s infinite;
+        }
+        /* Style for the main golden cursor */
+        #golden-cursor-main {
+            position: absolute;
+            width: 1.5rem;
+            height: 1.5rem;
+            background: #f1c40f;
+            border-radius: 50%;
+            pointer-events: none; /* Prevents the cursor from blocking clicks */
+            opacity: 0.8;
+            transform: translate(-50%, -50%); /* Centers the cursor element */
+            transition: transform 0.1s ease-out; /* Makes the movement slightly smoother */
+            box-shadow: 0 0 10px #f1c40f, 0 0 20px #f1c40f; /* Creates a glow effect */
+            z-index: 101;
+        }
+
+        a, button, .cursor-pointer {
+            cursor: none !important;
+        }
+
+        /* New hover effect for the golden cursor over interactive elements */
+        #golden-cursor-main.hovering {
+            transform: translate(-50%, -50%) scale(1.2);
+            box-shadow: 0 0 15px #fcd34d, 0 0 30px #f1c40f;
+        }
+    </style>
+    <!-- Short sound effect for page load -->
+    <audio id="loadSound" src="https://assets.mixkit.co/sfx/preview/mixkit-sci-fi-technology-starting-up-1669.mp3"></audio>
+    <!-- Looping ambient background music -->
+    <audio id="ambientAudio" loop>
+        <!-- The new audio source for a more fitting, Veridis Quo-like mood -->
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-sad-and-melancholic-violin-theme-3306.mp3" type="audio/mpeg">
+    </audio>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- The Golden Cursor Element -->
+    <div id="golden-cursor-main"></div>
+
+    <!-- Header Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 p-4 bg-black bg-opacity-70 backdrop-blur-sm">
+        <nav class="container mx-auto flex items-center justify-between">
+            <!-- Left-aligned "The Order" text -->
+            <a href="#visage" class="text-weeping-gold text-lg font-bold">The Order</a>
+
+            <!-- Central group of links, using flex-grow to fill space -->
+            <div class="flex items-center justify-center space-x-16 flex-grow">
+                <a href="#about" class="text-weeping-gold hover:underline">About Us</a>
+                <a href="#serpent-hand" class="text-weeping-gold hover:underline">The Serpent's Hand</a>
+                <a href="#collective-sorrow" class="text-weeping-gold hover:underline">The Collective Sorrow</a>
+            </div>
+
+            <!-- Right-aligned "Join Us" button -->
+            <a href="#pilgrimage" class="text-weeping-gold hover:underline">Join Us</a>
+        </nav>
+    </header>
+
+    <!-- The Serpent's Coil Modal -->
+    <div id="serpent-coil-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <!-- Added the text-weeping-gold class for consistency -->
+            <h2 class="text-3xl font-bold mb-4 text-weeping-gold">The Serpent's Coil</h2>
+            <p class="text-base text-gray-400 mb-8">
+                A place for all accepted initiates and surgeons to bear their burdens and remain updated on the Order's silent work.
+            </p>
+            <div class="bg-gray-900 p-8 rounded-lg shadow-lg border border-weeping-gold text-center">
+                <!-- Corrected the syntax error in the class attribute here -->
+                <p class="text-xl font-bold text-weeping-gold">
+                    Coming Soon.
+                </p>
+                <p class="text-sm text-gray-400 mt-2">
+                    Our burden is great, and our work is slow. The Serpent's Coil will open when the time is right.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Landing Page: The Visage -->
+    <section id="visage" class="section min-h-screen flex flex-col justify-center items-center text-center p-8 bg-black">
+        <h1 class="text-4xl md:text-6xl font-bold text-weeping-gold mb-4 animate-fade-in main-heading-glow">The Weeping Order of the Serpent</h1>
+        <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8 animate-fade-in-delay">
+            We are the tragic surgeons of a broken world. We bear a solemn duty, a necessary cruelty.
+        </p>
+        <div class="relative w-full max-w-xs md:max-w-md mx-auto mb-16">
+            <!-- Used a placeholder for a reliable image source -->
+            <img src="Mask-Image.png"  
+     alt="The Weeping Order mask with one tear and a golden band" 
+     class="animate-head-tilt cursor-pointer"
+     id="mask-audio-control">
+
+<style>
+  @keyframes head-tilt {
+    0%   { transform: rotate(0deg); }
+    25%  { transform: rotate(-10deg); }
+    50%  { transform: rotate(0deg); }
+    75%  { transform: rotate(10deg); }
+    100% { transform: rotate(0deg); }
+  }
+
+  .animate-head-tilt {
+    display: block;
+    margin: 40px auto;
+    width: 300px; /* adjust size as needed */
+    animation: head-tilt 2s infinite ease-in-out;
+  }
+
+  .cursor-pointer {
+    cursor: pointer;
+  }
+</style>
+
+<!-- Background Audio (hidden) -->
+<audio id="mask-audio" src="The Weeping Servent Website Theme.mp3" style="display:none;"></audio>
+
+<script>
+  const mask = document.getElementById('mask-audio-control');
+  const audio = document.getElementById('mask-audio');
+
+  // State: 0 = stopped, 1 = play once, 2 = loop
+  let clickState = 0;
+
+  mask.addEventListener('click', () => {
+    if (clickState === 0) {
+      audio.loop = false;
+      audio.play();
+      clickState = 1;
+      console.log("Audio playing once");
+    } else if (clickState === 1) {
+      audio.loop = true;
+      audio.play();
+      clickState = 2;
+      console.log("Audio looping");
+    } else if (clickState === 2) {
+      audio.pause();
+      audio.currentTime = 0;
+      clickState = 0;
+      console.log("Audio stopped");
+    }
+  });
+</script>
+
+        </div>
+
+        <!-- The Serpent's Coil button is now back here, below the mask image -->
+        <a id="serpent-coil-btn" class="p-3 my-8 rounded-md font-bold transition-transform transform hover:scale-105 border border-weeping-gold text-weeping-gold cursor-pointer">
+            The Serpent's Coil
+        </a>
+
+        <a href="#about" class="text-weeping-gold text-sm animate-pulse scroll-down">
+            <svg class="w-6 h-6 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+            <p>Scroll Down</p>
+        </a>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="section flex flex-col justify-center items-center text-center p-8">
+        <h2 class="text-3xl md:text-5xl font-bold mb-8">About The Weeping Order</h2>
+        <!-- New introductory paragraph for the uninitiated, inspired by your suggestion -->
+        <p class="text-lg text-gray-400 leading-relaxed max-w-4xl mx-auto mb-8 text-center italic">
+            For those whose hearts are sealed against the world's sickness, and whose minds cannot comprehend the burden we bear, know this: we are the tragic wardens of a broken world. We act not out of malice, but from a profound and necessary sorrow for a world that has lost its purity.
+        </p>
+        <div class="max-w-4xl mx-auto space-y-8 text-left">
+            <div>
+                <h3 class="text-2xl font-bold mb-2">The Founding Tragedy</h3>
+                <p class="text-lg text-gray-400 leading-relaxed">
+                    The Weeping Order of the Serpent was not born of ambition, but from profound grief. Its founder, the First Weeper, was a philosopher who witnessed the world's spiritual decay. He saw that traditional virtue was a lie and that the world was too sick for conventional healing. He concluded that only through brutal, decisive action could the world be cleansed. The mask he created embodied his mission: a smile for the world he hoped to save, and a tear for the terrible price of saving it.
+                </p>
+            </div>
+            <div>
+                <h3 class="text-2xl font-bold mb-2">The Philosophy of Enduring Sorrow</h3>
+                <p class="text-lg text-gray-400 leading-relaxed">
+                    We believe the world suffers from a fundamental imbalance of Purity and Corruption. Our purpose is to restore that balance, not with mercy, but with a necessary cruelty. We take no pleasure in our work; each act of "justice" is a painful surgical procedure on the world's sickness. This collective grief is what we call The Enduring Sorrow, and it fuels our every action, reminding us that our burden is a solemn, tragic duty.
+                </p>
+            </div>
+            <!-- New Section: The Ultimate Intention -->
+            <div>
+                <h3 class="text-2xl font-bold mb-2">The Ultimate Intention</h3>
+                <p class="text-lg text-gray-400 leading-relaxed">
+                    Our actions are not an end in themselves, but a means to an end. We are the gardeners of a poisoned world, and our surgical strikes are merely the cutting of a festering root. We believe that by removing the most corrupt elements, a new, pristine world will eventually grow from the cleansed soil. The Weeping Order seeks to achieve nothing less than a global restoration to a state of absolute purity, even if the path to get there is paved with necessary pain. Our hope is that one day, we will have nothing left to weep for.
+                </p>
+            </div>
+            <!-- End of New Section -->
+            <div>
+                <h3 class="text-2xl font-bold mb-2">The Ranks and Rituals</h3>
+                <p class="text-lg text-gray-400 leading-relaxed">
+                    The hierarchy of the Weeping Order is designed to reflect the solemnity and severity of our purpose. Advancement is not based on power or influence, but on one's ability to bear the weight of the world's sorrow. Each rank represents a different stage of our shared burden.
+                </p>
+                <p class="text-lg text-gray-400 leading-relaxed">
+                    The **Silent Initiates** are the newest members, acting as the Order's "interns." They are chosen not for their strength, but for the profound grief they carry. Their first pilgrimage is one of quiet contemplation, where they must listen to the world's suffering and absorb it into their own hearts. While they may perform certain basic jobs online, their ultimate duty is to witness the unfiltered realities of the world firsthand. The internet is a biased platform, and a true Initiate must step outside to experience and see the world with their own eyes. When they are invited to an in-person gathering with higher-ranking members, they wear a simple, unadorned **wooden mask** to conceal their identity.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Serpent's Hand Section -->
+    <section id="serpent-hand" class="section flex flex-col justify-center items-center text-center p-8 bg-black">
+        <h2 class="text-3xl md:text-5xl font-bold mb-8">The Serpent's Hand </h2>
+        <div class="w-full max-w-4xl mx-auto space-y-8 text-left bg-gray-900 p-8 rounded-lg shadow-lg border border-weeping-gold">
+            <div>
+                <h3 class="text-2xl font-bold mb-2">The Gilded Blade</h3>
+                <p class="text-lg text-gray-400 leading-relaxed">
+                    The Weeping Surgeons, when they act, are the Serpent's Hand. Their methods are swift, silent, and precise. Like a serpent's strike, they appear from the shadows without warning and deliver a final, chilling judgment. They do not engage in open warfare or long sieges; they infiltrate, they judge, and they vanish, leaving only the mark of the serpent behind. Their tools are not weapons of war but instruments of surgical removal.
+                </p>
+            </div>
+            <div>
+                <h3 class="text-2xl font-bold mb-2">The Poison of Purity</h3>
+                <p class="text-lg text-gray-400 leading-relaxed">
+                    Our justice is a poison to corruption. We target the heart of the rot, the individual or organization that has caused the most profound decay. We are not here to punish, but to purge, to cauterize the wound so the surrounding world can begin to heal. The people we "save" are often terrified of us, a testament to the severity of our actions, and to the deep-seated fear of our quiet, unyielding power.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Collective Sorrow Section -->
+    <section id="collective-sorrow" class="section flex flex-col justify-center items-center text-center p-8">
+        <h2 class="text-3xl md:text-5xl font-bold mb-4">The Collective Sorrow</h2>
+        <div class="w-full max-w-4xl mx-auto bg-gray-900 p-8 rounded-lg shadow-lg border border-weeping-gold">
+            <p class="text-lg md:text-xl mx-auto mb-4">
+                You are not alone in your grief.
+            </p>
+            <div class="text-center">
+                <div class="text-5xl md:text-8xl font-bold text-weeping-gold mb-2 sorrow-pulse">
+                    <span id="sorrowCounter">0</span>
+                </div>
+                <p class="text-lg text-gray-400 leading-relaxed">
+                    others have heard the call of the Order.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Pilgrimage (Join Section) -->
+    <section id="pilgrimage" class="section flex flex-col justify-center items-center text-center p-8 bg-black">
+        <h2 class="text-3xl md:text-5xl font-bold mb-4">The Final Pilgrimage</h2>
+        <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8">
+            Do you feel the world's sickness? Do you bear a sorrow so profound it demands a final act? You are called not to glory, but to a necessary pain.
+        </p>
+        <form id="joinForm" class="w-full max-w-lg bg-gray-900 p-8 rounded-lg shadow-lg border border-weeping-gold">
+            <div class="mb-4">
+                <!-- Added minlength and maxlength for the name input -->
+                <input type="text" id="name" name="name" placeholder="Your name (or pseudonym)" class="w-full p-3 bg-gray-800 rounded-md border border-gray-700 focus:outline-none focus:ring-1 focus:ring-weeping-gold" required minlength="2" maxlength="48">
+            </div>
+            <div class="mb-4">
+                <!-- Removed maxlength from the email field -->
+                <input type="email" id="email" name="email" placeholder="Your email (for a sign of the serpent)" class="w-full p-3 bg-gray-800 rounded-md border border-gray-700 focus:outline-none focus:ring-1 focus:ring-weeping-gold" required>
+            </div>
+            <div class="mb-6">
+                <textarea id="sorrow" name="sorrow" rows="4" placeholder="Describe the sorrow that weighs upon your soul..." class="w-full p-3 bg-gray-800 rounded-md border border-gray-700 focus:outline-none focus:ring-1 focus:ring-weeping-gold" required minlength="50" maxlength="500"></textarea>
+            </div>
+            <!-- The bot verification checkbox -->
+            <div class="mb-6 flex items-center justify-center">
+                <input type="checkbox" id="notBot" name="notBot" class="mr-2 h-4 w-4 rounded border-gray-300 text-weeping-gold focus:ring-weeping-gold">
+                <label for="notBot" class="text-sm md:text-base text-gray-400">I am not a sorrow-less machine.</label>
+            </div>
+            <button type="submit" class="w-full p-3 rounded-md font-bold transition-transform transform hover:scale-105 btn-weeping-gold">
+                Accept the Burden
+            </button>
+        </form>
+        <!-- Container for both success and error messages -->
+        <div id="message" class="mt-4 p-4 text-center rounded-lg max-w-md hidden"></div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const joinForm = document.getElementById('joinForm');
+            const messageDiv = document.getElementById('message');
+            const sorrowCounterSpan = document.getElementById('sorrowCounter');
+            const notBotCheckbox = document.getElementById('notBot');
+            const loadSound = document.getElementById('loadSound');
+            const ambientAudio = document.getElementById('ambientAudio');
+            const goldenCursor = document.getElementById('golden-cursor-main');
+            const sorrowTextarea = document.getElementById('sorrow');
+
+            let cooldownInterval;
+
+            // Initialize a Tone.js synth
+            const synth = new Tone.Synth().toDestination();
+
+            // Play initial load sound and then ambient audio on first user interaction
+            document.addEventListener('click', () => {
+                if (loadSound.paused && ambientAudio.paused) {
+                    loadSound.play().then(() => {
+                        // Start ambient audio after the initial sound finishes
+                        ambientAudio.play().catch(error => {
+                            console.log("Ambient audio playback was prevented by browser policy.");
+                        });
+                    }).catch(error => {
+                        console.log("Initial audio playback was prevented by browser policy.");
+                    });
+                }
+            }, { once: true });
+
+            // Initialize counter from local storage or default to 0
+            let sorrowCount = parseInt(localStorage.getItem('sorrowCount')) || 0;
+            sorrowCounterSpan.textContent = sorrowCount;
+
+            joinForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                // Get the timestamp of the last submission from local storage
+                const lastSubmissionTime = parseInt(localStorage.getItem('lastSubmissionTime')) || 0;
+                const currentTime = new Date().getTime();
+                const cooldownPeriod = 20 * 1000;  // 20 seconds in milliseconds
+
+                // Clear any previous countdown timer
+                if (cooldownInterval) {
+                    clearInterval(cooldownInterval);
+                }
+
+                // Check for cooldown
+                if (currentTime - lastSubmissionTime < cooldownPeriod) {
+                    // Update and display the cooldown message
+                    const updateCooldown = () => {
+                        const timeLeft = Math.ceil((cooldownPeriod - (new Date().getTime() - lastSubmissionTime)) / 1000);
+                        if (timeLeft <= 0) {
+                            clearInterval(cooldownInterval);
+                            messageDiv.textContent = 'You may now offer your burden.';
+                        } else {
+                            messageDiv.textContent = `You have already offered your burden. Please wait ${timeLeft} seconds before offering another.`;
+                        }
+                    };
+
+                    updateCooldown();
+                    cooldownInterval = setInterval(updateCooldown, 1000);
+
+                    messageDiv.classList.remove('hidden');
+                    messageDiv.classList.add('bg-red-800', 'text-white');
+                    return;
+                }
+
+                // Clear any previous messages and countdown timers
+                messageDiv.classList.add('hidden');
+                messageDiv.classList.remove('bg-gray-800', 'text-weeping-gold', 'bg-red-800', 'text-white');
+
+                // Get the name and sorrow text
+                const nameText = document.getElementById('name').value;
+                const sorrowText = sorrowTextarea.value;
+
+                // Check for name length
+                if (nameText.length < 2) {
+                    messageDiv.textContent = 'Your name is too short. It must be at least 2 characters.';
+                    messageDiv.classList.remove('hidden');
+                    messageDiv.classList.add('bg-red-800', 'text-white');
+                    return;
+                }
+                if (nameText.length > 48) {
+                    messageDiv.textContent = 'Your name is too long. Please use a shorter pseudonym (max 48 characters).';
+                    messageDiv.classList.remove('hidden');
+                    messageDiv.classList.add('bg-red-800', 'text-white');
+                    return;
+                }
+
+                // Check for sorrow text length
+                if (sorrowText.length < 50) {
+                    messageDiv.textContent = 'Your sorrow is too shallow. Describe it in at least 50 characters.';
+                    messageDiv.classList.remove('hidden');
+                    messageDiv.classList.add('bg-red-800', 'text-white');
+                    return;
+                }
+                if (sorrowText.length > 500) {
+                    messageDiv.textContent = 'Your sorrow is too vast. A simple burden is all that is required, no more than 500 characters.';
+                    messageDiv.classList.remove('hidden');
+                    messageDiv.classList.add('bg-red-800', 'text-white');
+                    return;
+                }
+
+                // Check if the verification box is checked
+                if (!notBotCheckbox.checked) {
+                    messageDiv.textContent = 'You must confirm you are not a sorrow-less machine.';
+                    messageDiv.classList.remove('hidden');
+                    messageDiv.classList.add('bg-red-800', 'text-white');
+                    return; // Stop the form from submitting
+                }
+
+                // Use Tone.js to play a simple note after all checks pass
+                if (Tone.context.state !== 'running') {
+                    Tone.start();
+                }
+                synth.triggerAttackRelease('C4', '8n');
+
+                // Collect form data (in a real-world scenario, this would be sent to a server)
+                const formData = {
+                    name: joinForm.elements.name.value,
+                    email: joinForm.elements.email.value,
+                    sorrow: joinForm.elements.sorrow.value
+                };
+
+                // Increment the counter
+                sorrowCount += 1;
+                sorrowCounterSpan.textContent = sorrowCount;
+                localStorage.setItem('sorrowCount', sorrowCount); // Store the updated count
+                localStorage.setItem('lastSubmissionTime', new Date().getTime()); // Store the new timestamp
+
+                // Display a success message
+                messageDiv.textContent = `A sign of the serpent has been sent to your email. Your burden is noted.`;
+                messageDiv.classList.remove('hidden');
+                messageDiv.classList.add('bg-gray-800', 'text-weeping-gold');
+
+                // Hide the success message after 80 seconds
+                setTimeout(() => {
+                    messageDiv.classList.add('hidden');
+                    messageDiv.classList.remove('bg-gray-800', 'text-weeping-gold');
+                }, 80000); // 80 seconds
+
+                // Optional: Clear the form and uncheck the box after submission
+                joinForm.reset();
+                notBotCheckbox.checked = false;
+            });
+
+            // --- Modal JavaScript ---
+            const serpentCoilBtn = document.getElementById('serpent-coil-btn');
+            const serpentCoilModal = document.getElementById('serpent-coil-modal');
+            const closeModalBtn = serpentCoilModal.querySelector('.close-btn');
+
+            serpentCoilBtn.addEventListener('click', () => {
+                serpentCoilModal.style.display = 'flex';
+            });
+
+            closeModalBtn.addEventListener('click', () => {
+                serpentCoilModal.style.display = 'none';
+            });
+
+            // Close the modal if the user clicks anywhere outside of it
+            window.addEventListener('click', (event) => {
+                if (event.target === serpentCoilModal) {
+                    serpentCoilModal.style.display = 'none';
+                }
+            });
+
+            // --- Corrected Golden Cursor Script with Hover Effect ---
+            document.addEventListener('mousemove', (e) => {
+                // Update the position of the single golden cursor element
+                goldenCursor.style.left = `${e.pageX}px`;
+                goldenCursor.style.top = `${e.pageY}px`;
+            });
+
+            // Add mouseover/mouseout listeners to handle the hover effect
+            const interactiveElements = document.querySelectorAll('a, button, .cursor-pointer, input, textarea');
+            interactiveElements.forEach(element => {
+                element.addEventListener('mouseover', () => {
+                    goldenCursor.classList.add('hovering');
+                });
+                element.addEventListener('mouseout', () => {
+                    goldenCursor.classList.remove('hovering');
+                });
+            });
+
+            // --- New: Disable Right-Click ---
+            document.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+            });
+        });
+    </script>
+</body>
+</html>
