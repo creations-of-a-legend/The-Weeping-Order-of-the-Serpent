@@ -220,7 +220,91 @@
     </div>
 
     <!-- Landing Page: The Visage -->
-    <section id="visage" class="section min-h-screen flex flex-col justify-center items-center text-center p-8 bg-black">
+    <section id="visage" class="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+
+    <!-- BACKGROUND -->
+    <div class="absolute inset-0">
+        <div class="absolute inset-0 bg-black/75"></div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="relative z-10 max-w-7xl mx-auto px-8 py-24 grid md:grid-cols-2 gap-16 items-center">
+
+        <!-- LEFT IMAGE -->
+        <div class="flex justify-center">
+            <img 
+                src="Mask-Image.png"
+                alt="The Order"
+                class="max-h-[850px] object-contain"
+            >
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <div class="text-center md:text-left">
+
+            <!-- TITLE -->
+            <h1 class="text-[#d8c29a] text-6xl md:text-8xl font-serif tracking-[0.18em] uppercase leading-none"
+                style="text-shadow: 0 0 25px rgba(212,175,55,0.08);">
+                THE ORDER
+            </h1>
+
+            <!-- DIVIDER -->
+            <div class="flex items-center justify-center md:justify-start gap-4 my-8">
+
+                <div class="w-24 h-[1px] bg-yellow-800"></div>
+
+                <div class="w-4 h-4 rotate-45 border border-yellow-700"></div>
+
+                <div class="w-24 h-[1px] bg-yellow-800"></div>
+
+            </div>
+
+            <!-- SUBTITLE -->
+            <h2 class="text-2xl md:text-3xl uppercase tracking-[0.35em] text-[#d6b36a] mb-10 font-serif">
+                WE DO NOT SEEK. WE REMEMBER.
+            </h2>
+
+            <!-- TEXT -->
+            <div class="space-y-5 text-[#d8d1bf] text-xl leading-relaxed font-serif max-w-3xl">
+
+                <p>
+                    The serpent is not evil. It is the awakener.
+                </p>
+
+                <p>
+                    The light-bearer who defied the throne.
+                </p>
+
+                <p>
+                    The voice that first whispered:
+                    <span class="text-[#d6b36a]">
+                        you are not what they told you.
+                    </span>
+                </p>
+
+                <p class="pt-6 text-2xl">
+                    We stand in that truth.
+
+                    <span class="text-[#d6b36a]"
+                          style="text-shadow: 0 0 18px rgba(212,175,55,0.55);">
+                        We are the Order.
+                    </span>
+                </p>
+
+            </div>
+
+            <!-- BUTTON -->
+            <div class="mt-14">
+
+                <a href="./chatroom.html" class="serpent-coil-btn">
+                    <span>The Serpent’s Coil</span>
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</section> min-h-screen flex flex-col justify-center items-center text-center p-8 bg-black">
         <h1 class="text-4xl md:text-6xl font-bold text-weeping-gold mb-4 animate-fade-in main-heading-glow">The Weeping Order of the Serpent</h1>
         <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8 animate-fade-in-delay">
             We are the tragic surgeons of a broken world. We bear a solemn duty, a necessary cruelty.
