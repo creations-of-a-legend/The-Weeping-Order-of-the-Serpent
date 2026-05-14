@@ -283,7 +283,7 @@
         </div>
 
         <!-- The Serpent's Coil button is now back here, below the mask image -->
-        <a id="serpent-coil-btn" class="p-3 my-8 rounded-md font-bold transition-transform transform hover:scale-105 border border-weeping-gold text-weeping-gold cursor-pointer">
+        <a id="serpent-coil-btn" href="gate.html" class="p-3 my-8 rounded-md font-bold transition-transform transform hover:scale-105 border border-weeping-gold text-weeping-gold cursor-pointer">
             The Serpent's Coil
         </a>
 
@@ -550,25 +550,11 @@
                 notBotCheckbox.checked = false;
             });
 
-            // --- Modal JavaScript ---
+            // --- Serpent's Coil now opens the real access gate ---
             const serpentCoilBtn = document.getElementById('serpent-coil-btn');
-            const serpentCoilModal = document.getElementById('serpent-coil-modal');
-            const closeModalBtn = serpentCoilModal.querySelector('.close-btn');
-
-            serpentCoilBtn.addEventListener('click', () => {
-                serpentCoilModal.style.display = 'flex';
-            });
-
-            closeModalBtn.addEventListener('click', () => {
-                serpentCoilModal.style.display = 'none';
-            });
-
-            // Close the modal if the user clicks anywhere outside of it
-            window.addEventListener('click', (event) => {
-                if (event.target === serpentCoilModal) {
-                    serpentCoilModal.style.display = 'none';
-                }
-            });
+            if (serpentCoilBtn) {
+                serpentCoilBtn.setAttribute('href', 'gate.html');
+            }
 
             // --- Corrected Golden Cursor Script with Hover Effect ---
             document.addEventListener('mousemove', (e) => {
