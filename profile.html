@@ -1,30 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Member Portfolio - The Order</title>
-<link rel="icon" type="image/png" href="favicon.png"><script src="https://cdn.tailwindcss.com"></script>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;600;700&display=swap');
-:root{--gold:#d6a24a;--muted:#9b6a1f;--bone:#d8d1bf}body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% 20%,rgba(214,162,74,.12),transparent 34%),linear-gradient(180deg,#050505,#000);color:var(--bone);font-family:Inter,sans-serif}.font-cinzel{font-family:Cinzel,serif}.gold-glow{color:var(--gold);text-shadow:0 0 18px rgba(214,162,74,.55)}.panel{background:rgba(17,17,17,.88);border:1px solid rgba(155,106,31,.55);box-shadow:0 0 30px rgba(214,162,74,.08)}.btn{border:1px solid var(--muted);color:var(--gold);padding:.7rem 1rem;border-radius:.65rem;background:rgba(0,0,0,.35);font-family:Cinzel,serif;letter-spacing:.08em;text-transform:uppercase;font-size:.82rem;text-decoration:none;display:inline-flex;cursor:pointer}.btn:hover{color:#ffd27a;box-shadow:0 0 18px rgba(214,162,74,.22)}input,textarea{background:rgba(0,0,0,.42);border:1px solid rgba(155,106,31,.65);color:var(--bone);outline:none}.badge{border:1px solid rgba(214,162,74,.45);color:#d6b36a;background:rgba(0,0,0,.35);border-radius:999px;padding:.35rem .65rem;font-size:.75rem;font-family:Cinzel,serif}.record-line{border-bottom:1px solid rgba(155,106,31,.22);padding-bottom:.75rem;margin-bottom:.75rem}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Member Portfolio - The Order</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;600;700&display=swap');
+    :root { --gold:#d6a24a; --muted:#9b6a1f; --bone:#d8d1bf; }
+    body { margin:0; min-height:100vh; background:radial-gradient(circle at 50% 20%,rgba(214,162,74,.12),transparent 34%),linear-gradient(180deg,#050505,#000); color:var(--bone); font-family:Inter,sans-serif; }
+    .font-cinzel { font-family:Cinzel,serif; }
+    .gold-glow { color:var(--gold); text-shadow:0 0 18px rgba(214,162,74,.55); }
+    .panel { background:rgba(17,17,17,.88); border:1px solid rgba(155,106,31,.55); box-shadow:0 0 30px rgba(214,162,74,.08); }
+    .btn { border:1px solid var(--muted); color:var(--gold); padding:.7rem 1rem; border-radius:.65rem; background:rgba(0,0,0,.35); font-family:Cinzel,serif; letter-spacing:.08em; text-transform:uppercase; font-size:.82rem; text-decoration:none; display:inline-flex; cursor:pointer; }
+    .btn:hover { color:#ffd27a; box-shadow:0 0 18px rgba(214,162,74,.22); }
+    input, textarea { background:rgba(0,0,0,.42); border:1px solid rgba(155,106,31,.65); color:var(--bone); outline:none; }
+    .badge { border:1px solid rgba(214,162,74,.45); color:#d6b36a; background:rgba(0,0,0,.35); border-radius:999px; padding:.35rem .65rem; font-size:.75rem; font-family:Cinzel,serif; }
+    .record-line { border-bottom:1px solid rgba(155,106,31,.22); padding-bottom:.75rem; margin-bottom:.75rem; }
+  </style>
 </head>
+
 <body>
-<header class="px-5 py-4 border-b border-yellow-900/70 bg-black/80 backdrop-blur flex items-center justify-between gap-4"><a href="./index.html" class="flex items-center gap-4 no-underline"><img src="favicon.png" class="w-16 h-16 object-contain rounded-full border border-yellow-800/60"><div><h1 class="font-cinzel text-2xl md:text-3xl gold-glow tracking-[.15em] uppercase">The Order</h1><p class="text-xs text-gray-500 uppercase tracking-[.18em]">Member Portfolio</p></div></a><nav><a class="btn" href="./chatroom.html">Return to Coil</a></nav></header>
-<main class="max-w-6xl mx-auto px-5 py-10 grid lg:grid-cols-[360px_1fr] gap-8">
-<aside class="panel rounded-3xl p-7 h-fit"><div class="flex justify-center mb-6"><div class="w-36 h-36 rounded-full border border-yellow-800/70 bg-black/40 flex items-center justify-center"><img src="favicon.png" class="w-28 h-28 object-contain rounded-full"></div></div><h2 id="username" class="font-cinzel gold-glow text-3xl text-center uppercase tracking-[.12em]">Unknown</h2><p id="rank" class="text-center text-[#d6b36a] font-cinzel mt-2 tracking-[.1em]">Unranked</p><div class="mt-8 text-sm"><div class="record-line"><span class="text-gray-500">Initiate No.</span><div id="initiateNumber" class="font-cinzel text-xl text-[#d8c29a]">------</div></div><div class="record-line"><span class="text-gray-500">Role</span><div id="role" class="font-cinzel text-xl text-[#d8c29a]">Unknown</div></div><div class="record-line"><span class="text-gray-500">Status</span><div id="status" class="font-cinzel text-xl text-[#d8c29a]">Unknown</div></div><div class="record-line"><span class="text-gray-500">Sigil ID</span><div id="uid" class="text-xs break-all text-gray-400 mt-1">unknown</div></div></div></aside>
-<section class="space-y-8"><div class="panel rounded-3xl p-8"><h3 class="font-cinzel text-2xl gold-glow mb-4 uppercase tracking-[.12em]">Archived Biography</h3><p id="bio" class="text-lg leading-relaxed text-gray-300">No biography has been archived.</p></div><div class="panel rounded-3xl p-8"><h3 class="font-cinzel text-2xl gold-glow mb-4 uppercase tracking-[.12em]">Badges & Marks</h3><div id="badges" class="flex flex-wrap gap-3"></div></div><div id="editPanel" class="panel rounded-3xl p-8 hidden"><h3 class="font-cinzel text-2xl gold-glow mb-4 uppercase tracking-[.12em]">Edit My Portfolio</h3><p class="text-gray-500 mb-4">Avatar is locked to the Order sigil for moderation.</p><form id="profileForm" class="space-y-4"><div><label class="block text-sm text-gray-400 mb-2">Display Name</label><input id="editUsername" maxlength="40" class="w-full rounded-xl px-4 py-3"></div><div><label class="block text-sm text-gray-400 mb-2">Bio</label><textarea id="editBio" maxlength="500" rows="5" class="w-full rounded-xl px-4 py-3"></textarea></div><button class="btn" type="submit">Archive Changes</button></form></div></section>
-</main>
-<script type="module">
-import { DEFAULT_TEST_USER } from "./firebase-config.js";
-function arr(k,f){const s=localStorage.getItem(k);if(!s){localStorage.setItem(k,JSON.stringify(f));return f}try{const p=JSON.parse(s);return Array.isArray(p)?p:f}catch{return f}}
-function current(){const s=localStorage.getItem("coil_current_user");if(s){try{return JSON.parse(s)}catch{}}return DEFAULT_TEST_USER}
-function saveCurrent(u){localStorage.setItem("coil_current_user",JSON.stringify(u))}
-function saveMembers(m){localStorage.setItem("coil_members",JSON.stringify(m))}
-const currentUser=current(),fallback=[currentUser,{uid:"first-weeper-admin",username:"First Weeper",rank:"First Weeper",role:"admin",initiateNumber:"000001",status:"sealed",bio:"Keeper of the first record. Architect of the Coil.",badges:["Founder","Archive Keeper","The First Witness"]}];
-const params=new URLSearchParams(location.search),requested=params.get("uid")||"me",actual=requested==="me"?currentUser.uid:requested;let members=arr("coil_members",fallback),member=members.find(m=>m.uid===actual)||currentUser,isMe=actual===currentUser.uid;
-function render(){username.textContent=member.username||"Unknown";rank.textContent=member.rank||"Unranked";initiateNumber.textContent=member.initiateNumber||"------";role.textContent=member.role||"guest";status.textContent=member.status||"Unknown";uid.textContent=member.uid||"unknown";bio.textContent=member.bio||"No biography has been archived.";badges.innerHTML="";(member.badges?.length?member.badges:["No marks recorded"]).forEach(b=>{const s=document.createElement("span");s.className="badge";s.textContent=b;badges.appendChild(s)});if(isMe){editPanel.classList.remove("hidden");editUsername.value=member.username||"";editBio.value=member.bio||""}}
-profileForm?.addEventListener("submit",e=>{e.preventDefault();const n=editUsername.value.trim().slice(0,40),b=editBio.value.trim().slice(0,500);if(n.length>=2)member.username=n;member.bio=b||member.bio;members=members.map(m=>m.uid===member.uid?member:m);if(!members.find(m=>m.uid===member.uid))members.push(member);if(member.uid===currentUser.uid)saveCurrent(member);saveMembers(members);render();alert("Portfolio archived.")});
-render();
-</script>
-</body></html>
+  <header class="px-5 py-4 border-b border-yellow-900/70 bg-black/80 backdrop-blur flex items-center justify-between gap-4">
+    <a href="./index.html" class="flex items-center gap-4 no-underline">
+      <img src="favicon.png" class="w-16 h-16 object-contain rounded-full border border-yellow-800/60">
+      <div>
+        <h1 class="font-cinzel text-2xl md:text-3xl gold-glow tracking-[.15em] uppercase">The Order</h1>
+        <p class="text-xs text-gray-500 uppercase tracking-[.18em]">Member Portfolio</p>
+      </div>
+    </a>
+    <nav><a class="btn" href="./chatroom.html">Return to Coil</a></nav>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-5 py-10 grid lg:grid-cols-[360px_1fr] gap-8">
+    <aside class="panel rounded-3xl p-7 h-fit">
+      <div class="flex justify-center mb-6">
+        <div class="w-36 h-36 rounded-full border border-yellow-800/70 bg-black/40 flex items-center justify-center">
+          <img src="favicon.png" class="w-28 h-28 object-contain rounded-full">
+        </div>
+      </div>
+      <h2 id="username" class="font-cinzel gold-glow text-3xl text-center uppercase tracking-[.12em]">Unknown</h2>
+      <p id="rank" class="text-center text-[#d6b36a] font-cinzel mt-2 tracking-[.1em]">Unranked</p>
+      <div class="mt-8 text-sm">
+        <div class="record-line"><span class="text-gray-500">Initiate No.</span><div id="initiateNumber" class="font-cinzel text-xl text-[#d8c29a]">------</div></div>
+        <div class="record-line"><span class="text-gray-500">Role</span><div id="role" class="font-cinzel text-xl text-[#d8c29a]">Unknown</div></div>
+        <div class="record-line"><span class="text-gray-500">Status</span><div id="status" class="font-cinzel text-xl text-[#d8c29a]">Unknown</div></div>
+        <div class="record-line"><span class="text-gray-500">Sigil ID</span><div id="uid" class="text-xs break-all text-gray-400 mt-1">unknown</div></div>
+      </div>
+    </aside>
+
+    <section class="space-y-8">
+      <div class="panel rounded-3xl p-8">
+        <h3 class="font-cinzel text-2xl gold-glow mb-4 uppercase tracking-[.12em]">Archived Biography</h3>
+        <p id="bio" class="text-lg leading-relaxed text-gray-300">No biography has been archived.</p>
+      </div>
+
+      <div class="panel rounded-3xl p-8">
+        <h3 class="font-cinzel text-2xl gold-glow mb-4 uppercase tracking-[.12em]">Badges & Marks</h3>
+        <div id="badges" class="flex flex-wrap gap-3"></div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { firebaseConfig } from "./firebase-config.js";
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const params = new URLSearchParams(window.location.search);
+    const requestedUid = params.get("uid") || "me";
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) return;
+
+      const uid = requestedUid === "me" ? user.uid : requestedUid;
+      const snap = await getDoc(doc(db, "profiles", uid));
+
+      if (!snap.exists()) {
+        render({
+          uid,
+          username: "Unknown Witness",
+          rank: "Unranked",
+          role: "unknown",
+          initiateNumber: "------",
+          status: "unrecorded",
+          bio: "No record exists.",
+          badges: ["Unrecorded"]
+        });
+        return;
+      }
+
+      render({ uid, ...snap.data() });
+    });
+
+    signInAnonymously(auth);
+
+    function render(member) {
+      document.getElementById("username").textContent = member.username || "Unknown";
+      document.getElementById("rank").textContent = member.rank || "Unranked";
+      document.getElementById("initiateNumber").textContent = member.initiateNumber || "------";
+      document.getElementById("role").textContent = member.role || "unknown";
+      document.getElementById("status").textContent = member.status || "unknown";
+      document.getElementById("uid").textContent = member.uid || "unknown";
+      document.getElementById("bio").textContent = member.bio || "No biography has been archived.";
+
+      const badges = member.badges && member.badges.length ? member.badges : ["No marks recorded"];
+      const badgeBox = document.getElementById("badges");
+      badgeBox.innerHTML = "";
+
+      badges.forEach(badge => {
+        const span = document.createElement("span");
+        span.className = "badge";
+        span.textContent = badge;
+        badgeBox.appendChild(span);
+      });
+    }
+  </script>
+</body>
+</html>
