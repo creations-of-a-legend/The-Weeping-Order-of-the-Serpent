@@ -1,69 +1,764 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Serpent's Coil</title>
-<link rel="icon" type="image/png" href="favicon.png">
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;600;700&display=swap');
-:root{--gold:#d6a24a;--muted:#9b6a1f;--bone:#d8d1bf}*{box-sizing:border-box}
-body{margin:0;background:radial-gradient(circle at 50% 12%,rgba(214,162,74,.12),transparent 32%),#000;color:var(--bone);font-family:Inter,sans-serif;min-height:100vh;overflow:hidden}
-.font-cinzel{font-family:Cinzel,serif}.gold-glow{color:var(--gold);text-shadow:0 0 16px rgba(214,162,74,.5)}
-.app{height:100vh;display:grid;grid-template-rows:auto 1fr}header{border-bottom:1px solid rgba(155,106,31,.7);background:rgba(0,0,0,.88);backdrop-filter:blur(10px)}
-.chat-area{display:grid;grid-template-columns:minmax(0,1fr)340px;min-height:0}.main-chat{display:grid;grid-template-rows:1fr auto;min-height:0}.messages{overflow-y:auto;padding:1rem}
-.panel{background:rgba(17,17,17,.9);border:1px solid rgba(155,106,31,.55);box-shadow:0 0 24px rgba(214,162,74,.08)}
-.message{max-width:820px;margin-bottom:1rem;padding:1rem;border-radius:1rem;background:rgba(31,41,55,.75);border:1px solid rgba(155,106,31,.28);overflow-wrap:anywhere}.message.self{margin-left:auto;background:rgba(214,162,74,.18);border-color:rgba(214,162,74,.55)}.message.admin{background:rgba(214,162,74,.22);border-color:rgba(241,196,15,.7);box-shadow:0 0 20px rgba(214,162,74,.12)}.message.fading{opacity:.45}
-.meta{display:flex;align-items:center;flex-wrap:wrap;gap:.45rem;margin-bottom:.5rem}.avatar{width:34px;height:34px;object-fit:contain;border-radius:999px;border:1px solid rgba(214,162,74,.45)}.username{color:var(--gold);font-family:Cinzel,serif;font-weight:700;text-decoration:none}.username:hover{color:#ffd27a;text-shadow:0 0 12px rgba(214,162,74,.6)}
-.pill{display:inline-block;padding:.12rem .45rem;border:1px solid rgba(214,162,74,.45);border-radius:999px;font-size:.7rem;color:#d6b36a;background:rgba(0,0,0,.35)}.guest{color:#9ca3af;border-color:rgba(156,163,175,.35)}.adminpill{color:#f1c40f;border-color:rgba(241,196,15,.7)}.time{font-size:.72rem;color:#6b7280}
-.btn{border:1px solid var(--muted);color:var(--gold);padding:.68rem .95rem;border-radius:.65rem;background:rgba(0,0,0,.35);transition:.2s;font-family:Cinzel,serif;letter-spacing:.08em;text-transform:uppercase;font-size:.78rem;text-decoration:none;white-space:nowrap;cursor:pointer}.btn:hover{color:#ffd27a;box-shadow:0 0 18px rgba(214,162,74,.22)}.danger{color:#fca5a5;border-color:rgba(185,28,28,.7)}
-input{background:rgba(0,0,0,.45);border:1px solid rgba(155,106,31,.7);color:var(--bone);outline:none;min-width:0}input:focus{border-color:var(--gold);box-shadow:0 0 12px rgba(214,162,74,.18)}
-.sidebar{border-left:1px solid rgba(155,106,31,.45);background:rgba(0,0,0,.35);overflow-y:auto}.member-card{display:block;border:1px solid rgba(155,106,31,.35);background:rgba(17,17,17,.82);border-radius:.85rem;padding:.8rem;margin-bottom:.75rem;text-decoration:none;color:var(--bone);transition:.2s}.member-card:hover{border-color:var(--gold);box-shadow:0 0 14px rgba(214,162,74,.15)}
-.emoji-row{display:flex;gap:.5rem;flex-wrap:wrap;max-height:96px;overflow-y:auto}.emoji-btn{background:rgba(0,0,0,.35);border:1px solid rgba(214,162,74,.35);color:#d6a24a;border-radius:10px;padding:6px 10px;transition:.2s;cursor:pointer;font-size:1.15rem;line-height:1.2}.emoji-btn:hover{border-color:#d6a24a;box-shadow:0 0 12px rgba(214,162,74,.22);transform:scale(1.08)}
-.notice{border:1px solid rgba(155,106,31,.35);background:rgba(0,0,0,.38);color:#b8a06a;border-radius:.85rem;padding:.75rem;font-size:.85rem;line-height:1.45}.status{color:#8b6f32;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;font-family:Cinzel,serif}
-@media(max-width:980px){body{overflow:auto}.app{height:auto;min-height:100vh}.chat-area{grid-template-columns:1fr}.main-chat{min-height:calc(100vh - 92px)}.sidebar{border-left:0;border-top:1px solid rgba(155,106,31,.45);max-height:340px}header{flex-wrap:wrap}.actions{width:100%;justify-content:flex-start;overflow-x:auto;padding-bottom:.2rem}}@media(max-width:540px){.message{max-width:100%}.composer{margin:.65rem;padding:.65rem}.composer-form{flex-direction:column}.btn{width:100%;text-align:center;justify-content:center}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Serpent's Coil</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;600;700&display=swap');
+
+    :root {
+      --gold: #d6a24a;
+      --gold-bright: #f1c40f;
+      --gold-muted: #9b6a1f;
+      --bone: #d8d1bf;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 50% 12%, rgba(214,162,74,0.12), transparent 32%),
+        radial-gradient(circle at center, rgba(214,162,74,0.06), #000 46%, #000 100%);
+      color: var(--bone);
+      font-family: Inter, sans-serif;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .font-cinzel { font-family: Cinzel, serif; }
+
+    .gold-glow {
+      color: var(--gold);
+      text-shadow: 0 0 16px rgba(214,162,74,.5);
+    }
+
+    .app {
+      height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    header {
+      border-bottom: 1px solid rgba(155,106,31,.7);
+      background: rgba(0,0,0,.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .chat-area {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) 350px;
+      min-height: 0;
+    }
+
+    .main-chat {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 0;
+    }
+
+    .room-bar {
+      border-bottom: 1px solid rgba(155,106,31,.45);
+      background: rgba(0,0,0,.35);
+    }
+
+    .messages {
+      overflow-y: auto;
+      padding: 1rem;
+      min-height: 0;
+      scroll-behavior: smooth;
+    }
+
+    .panel {
+      background: rgba(17,17,17,.9);
+      border: 1px solid rgba(155,106,31,.55);
+      box-shadow: 0 0 24px rgba(214,162,74,.08);
+    }
+
+    .message {
+      max-width: 820px;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-radius: 1rem;
+      background: rgba(31,41,55,.75);
+      border: 1px solid rgba(155,106,31,.28);
+      overflow-wrap: anywhere;
+      transition: opacity .3s ease;
+    }
+
+    .message.self {
+      margin-left: auto;
+      background: rgba(214,162,74,.18);
+      border-color: rgba(214,162,74,.55);
+    }
+
+    .message.admin {
+      background: rgba(214,162,74,.22);
+      border-color: rgba(241,196,15,.7);
+      box-shadow: 0 0 20px rgba(214,162,74,.12);
+    }
+
+    .message.fading { opacity: .45; }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: .45rem;
+      margin-bottom: .5rem;
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+      border-radius: 999px;
+      border: 1px solid rgba(214,162,74,.45);
+    }
+
+    .username {
+      color: var(--gold);
+      font-family: Cinzel, serif;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .username:hover {
+      color: #ffd27a;
+      text-shadow: 0 0 12px rgba(214,162,74,.6);
+    }
+
+    .pill {
+      display: inline-block;
+      padding: .12rem .45rem;
+      border: 1px solid rgba(214,162,74,.45);
+      border-radius: 999px;
+      font-size: .7rem;
+      color: #d6b36a;
+      background: rgba(0,0,0,.35);
+    }
+
+    .guest { color:#9ca3af; border-color:rgba(156,163,175,.35); }
+    .adminpill { color:#f1c40f; border-color:rgba(241,196,15,.7); }
+
+    .time {
+      font-size: .72rem;
+      color: #6b7280;
+    }
+
+    .btn, select {
+      border: 1px solid var(--gold-muted);
+      color: var(--gold);
+      padding: .68rem .95rem;
+      border-radius: .65rem;
+      background: rgba(0,0,0,.35);
+      transition: .2s;
+      font-family: Cinzel, serif;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-size: .78rem;
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      color: #ffd27a;
+      box-shadow: 0 0 18px rgba(214,162,74,.22);
+    }
+
+    .danger {
+      color: #fca5a5;
+      border-color: rgba(185,28,28,.7);
+    }
+
+    input {
+      background: rgba(0,0,0,.45);
+      border: 1px solid rgba(155,106,31,.7);
+      color: var(--bone);
+      outline: none;
+      min-width: 0;
+    }
+
+    input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 12px rgba(214,162,74,.18);
+    }
+
+    .sidebar {
+      border-left: 1px solid rgba(155,106,31,.45);
+      background: rgba(0,0,0,.35);
+      overflow-y: auto;
+    }
+
+    .member-card {
+      display: block;
+      border: 1px solid rgba(155,106,31,.35);
+      background: rgba(17,17,17,.82);
+      border-radius: .85rem;
+      padding: .8rem;
+      margin-bottom: .75rem;
+      text-decoration: none;
+      color: var(--bone);
+      transition: .2s;
+    }
+
+    .member-card:hover {
+      border-color: var(--gold);
+      box-shadow: 0 0 14px rgba(214,162,74,.15);
+    }
+
+    .emoji-row {
+      display:flex;
+      gap:.5rem;
+      flex-wrap:wrap;
+      max-height:96px;
+      overflow-y:auto;
+    }
+
+    .emoji-btn {
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(214,162,74,.35);
+      color: #d6a24a;
+      border-radius: 10px;
+      padding: 6px 10px;
+      transition: .2s;
+      cursor: pointer;
+      font-size: 1.15rem;
+      line-height: 1.2;
+    }
+
+    .emoji-btn:hover {
+      border-color:#d6a24a;
+      box-shadow:0 0 12px rgba(214,162,74,.22);
+      transform:scale(1.08);
+    }
+
+    .notice {
+      border: 1px solid rgba(155,106,31,.35);
+      background: rgba(0,0,0,.38);
+      color: #b8a06a;
+      border-radius: .85rem;
+      padding: .75rem;
+      font-size: .85rem;
+      line-height: 1.45;
+    }
+
+    .status {
+      color:#8b6f32;
+      font-size:.78rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-family:Cinzel,serif;
+    }
+
+    @media(max-width:980px) {
+      body { overflow:auto; }
+      .app { height:auto; min-height:100vh; }
+      .chat-area { grid-template-columns:1fr; }
+      .main-chat { min-height:calc(100vh - 92px); }
+      .sidebar {
+        border-left:0;
+        border-top:1px solid rgba(155,106,31,.45);
+        max-height:340px;
+      }
+      header { flex-wrap:wrap; }
+      .actions {
+        width:100%;
+        justify-content:flex-start;
+        overflow-x:auto;
+        padding-bottom:.2rem;
+      }
+    }
+
+    @media(max-width:540px) {
+      .message { max-width:100%; }
+      .composer { margin:.65rem; padding:.65rem; }
+      .composer-form { flex-direction:column; }
+      .btn, select {
+        width:100%;
+        text-align:center;
+        justify-content:center;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<div class="app">
-<header class="px-5 py-4 flex items-center justify-between gap-4">
-<div class="flex items-center gap-4 min-w-0"><img src="favicon.png" class="w-14 h-14 object-contain rounded-full border border-yellow-800/60 flex-shrink-0" alt="logo"><div class="min-w-0"><h1 class="font-cinzel text-2xl md:text-3xl gold-glow tracking-[.16em] uppercase truncate">The Serpent's Coil</h1><p class="text-xs text-gray-400 tracking-[.18em] uppercase" id="roomSubtitle">Guest Room · Transient Whispers</p></div></div>
-<nav class="actions flex items-center gap-3"><a class="btn" href="./profile.html?uid=me">My Portfolio</a><button class="btn" id="identityBtn">Identity</button><button class="btn" id="codeBtn">Access Code</button><button class="btn danger" id="clearChatBtn">Clear Local Chat</button><a class="btn" href="./index.html">Return</a></nav>
-</header>
-<main class="chat-area">
-<section class="main-chat"><div id="messages" class="messages"></div><div class="panel composer m-4 p-3 rounded-2xl"><div class="flex items-center justify-between gap-3 mb-3"><div class="status" id="roleStatus">Guest messages fade after five minutes.</div><div class="status" id="messageCount">0 archived</div></div>
-<div class="emoji-row mb-3" id="emojiBar"><button type="button" class="emoji-btn">🎭</button><button type="button" class="emoji-btn">🜂</button><button type="button" class="emoji-btn">☿</button><button type="button" class="emoji-btn">🜏</button><button type="button" class="emoji-btn">⚚</button><button type="button" class="emoji-btn">☾</button><button type="button" class="emoji-btn">👁️</button><button type="button" class="emoji-btn">🕯️</button><button type="button" class="emoji-btn">🐍</button><button type="button" class="emoji-btn">🩸</button><button type="button" class="emoji-btn">📜</button><button type="button" class="emoji-btn">⚖️</button><button type="button" class="emoji-btn">🪽</button><button type="button" class="emoji-btn">🕳️</button><button type="button" class="emoji-btn">⛓️</button><button type="button" class="emoji-btn">🗝️</button></div>
-<form id="messageForm" class="composer-form flex gap-3"><input id="messageInput" maxlength="500" class="flex-1 rounded-xl px-4 py-3" placeholder="Speak into the Coil..." required><button class="btn" type="submit">Send</button></form></div></section>
-<aside class="sidebar p-4"><div class="notice mb-4" id="roomNotice"></div><h2 class="font-cinzel gold-glow text-xl mb-4 tracking-[.15em] uppercase">Initiates</h2><div id="members"></div></aside>
-</main></div>
-<script type="module">
-import { DEFAULT_TEST_USER, ONE_TIME_ADMIN_CODE } from "./firebase-config.js";
-const GUEST_EXPIRY_MS=5*60*1000,GUEST_COOLDOWN_MS=4000;
-const messagesEl=document.getElementById("messages"),membersEl=document.getElementById("members"),messageForm=document.getElementById("messageForm"),messageInput=document.getElementById("messageInput"),clearChatBtn=document.getElementById("clearChatBtn"),messageCount=document.getElementById("messageCount"),roleStatus=document.getElementById("roleStatus"),roomNotice=document.getElementById("roomNotice"),roomSubtitle=document.getElementById("roomSubtitle"),identityBtn=document.getElementById("identityBtn"),codeBtn=document.getElementById("codeBtn");
-const defaultMembers=[{uid:"first-weeper-admin",username:"First Weeper",rank:"First Weeper",role:"admin",initiateNumber:"000001",status:"sealed",bio:"Keeper of the first record. Architect of the Coil.",badges:["Founder","Archive Keeper","The First Witness"]},{uid:"silent-initiate-002",username:"Silent Initiate",rank:"Silent Initiate",role:"approved",initiateNumber:"000002",status:"accepted",bio:"A witness behind the veil.",badges:["First Ten","Witness"]},{uid:"veiled-witness-003",username:"Veiled Witness",rank:"Veiled Witness",role:"approved",initiateNumber:"000003",status:"accepted",bio:"Collector of broken transmissions.",badges:["Archivist"]}];
-const defaultMessages=[{id:createId(),uid:"silent-initiate-002",username:"Silent Initiate",rank:"Silent Initiate",role:"approved",text:"The Coil is open. The first whispers have been archived. 🎭",createdAt:Date.now()-90000,expiresAt:null},{id:createId(),uid:"veiled-witness-003",username:"Veiled Witness",rank:"Veiled Witness",role:"approved",text:"File WS-014 remains sealed. Do not ask what was recovered beneath the chapel. 👁️",createdAt:Date.now()-45000,expiresAt:null}];
-let currentUser=loadCurrentUser(),members=loadArray("coil_members",defaultMembers),messages=loadArray("coil_messages",defaultMessages),lastGuestSend=Number(localStorage.getItem("coil_last_guest_send")||"0");
-ensureCurrentUserMember();cleanupExpiredMessages();renderAll();setInterval(()=>{cleanupExpiredMessages();renderMessages()},5000);
-function loadCurrentUser(){const s=localStorage.getItem("coil_current_user");if(s){try{return {...DEFAULT_TEST_USER,...JSON.parse(s)}}catch{}}const u={...DEFAULT_TEST_USER,uid:"guest-"+Math.random().toString(36).slice(2,10)};localStorage.setItem("coil_current_user",JSON.stringify(u));return u}
-function saveCurrentUser(){localStorage.setItem("coil_current_user",JSON.stringify(currentUser))}
-function loadArray(k,f){const s=localStorage.getItem(k);if(!s){localStorage.setItem(k,JSON.stringify(f));return [...f]}try{const p=JSON.parse(s);return Array.isArray(p)?p:[...f]}catch{return [...f]}}
-function saveMessages(){localStorage.setItem("coil_messages",JSON.stringify(messages))}function saveMembers(){localStorage.setItem("coil_members",JSON.stringify(members))}
-function ensureCurrentUserMember(){const e=members.find(m=>m.uid===currentUser.uid);if(!e)members.push(currentUser);else Object.assign(e,currentUser);saveMembers()}
-function createId(){return"msg-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,8)}
-function cleanupExpiredMessages(){const n=Date.now(),b=messages.length;messages=messages.filter(m=>!m.expiresAt||m.expiresAt>n);if(messages.length!==b)saveMessages()}
-function profileUrl(uid){return uid===currentUser.uid?"./profile.html?uid=me":"./profile.html?uid="+encodeURIComponent(uid)}
-function renderAll(){renderStatus();renderMembers();renderMessages()}
-function renderStatus(){const r=currentUser.role||"guest";if(r==="admin"){roleStatus.textContent="Admin records remain unless erased.";roomSubtitle.textContent="Admin Room · Sealed Authority";roomNotice.innerHTML="<strong>Admin:</strong> Your records do not expire. You can erase local test chat."}else if(r==="approved"){roleStatus.textContent="Approved voices are archived.";roomSubtitle.textContent="Approved Room · Archived Voices";roomNotice.innerHTML="<strong>Approved:</strong> Your messages remain archived. Small upload support can be added next."}else{roleStatus.textContent="Guest messages fade after five minutes.";roomSubtitle.textContent="Guest Room · Transient Whispers";roomNotice.innerHTML="<strong>Guest:</strong> Text only. No uploads. Messages vanish after five minutes."}}
-function renderMembers(){membersEl.innerHTML="";members.forEach(m=>{const a=document.createElement("a");a.className="member-card";a.href=m.uid===currentUser.uid?"./profile.html?uid=me":"./profile.html?uid="+encodeURIComponent(m.uid);a.innerHTML=`<div class="flex items-center gap-3"><img src="favicon.png" class="avatar" alt=""><div><div class="font-cinzel text-[#d6a24a] font-bold">${esc(m.username)}</div><div class="text-xs text-gray-400 mt-1">${esc(m.rank)} · ${esc(m.role||"guest")}</div></div></div><div class="text-xs text-gray-500 mt-2">${esc(m.bio||"No record available.")}</div>`;membersEl.appendChild(a)})}
-function renderMessages(){cleanupExpiredMessages();messagesEl.innerHTML=`<div class="text-center text-sm text-yellow-700/80 my-4 font-cinzel tracking-[.18em] uppercase">The archive is listening.</div>`;const now=Date.now();messages.forEach(m=>{const self=m.uid===currentUser.uid,admin=m.role==="admin",fading=m.expiresAt&&m.expiresAt-now<60000;const d=document.createElement("div");d.className="message "+(self?"self ":"")+(admin?"admin ":"")+(fading?"fading":"");const expiry=m.expiresAt?` · fades in ${Math.max(0,Math.ceil((m.expiresAt-now)/1000))}s`:"";const pill=m.role==="admin"?"pill adminpill":m.role==="guest"?"pill guest":"pill";d.innerHTML=`<div class="meta"><img src="favicon.png" class="avatar" alt=""><a class="username" href="${profileUrl(m.uid)}">${esc(m.username)}</a><span class="${pill}">${esc(m.rank||"Guest")}</span><span class="time">${formatTime(m.createdAt)}${expiry}</span>${self?`<button class="btn danger" data-delete="${esc(m.id)}" type="button">Delete</button>`:""}</div><div class="leading-relaxed">${esc(m.text)}</div>`;messagesEl.appendChild(d)});document.querySelectorAll("[data-delete]").forEach(b=>b.addEventListener("click",()=>{messages=messages.filter(m=>m.id!==b.getAttribute("data-delete"));saveMessages();renderMessages()}));messageCount.textContent=`${messages.length} archived`;messagesEl.scrollTop=messagesEl.scrollHeight}
-function formatTime(v){return new Date(v||Date.now()).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}
-function esc(t){return String(t||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
-function insertAtCursor(input,text){const s=input.selectionStart??input.value.length,e=input.selectionEnd??input.value.length;input.value=input.value.slice(0,s)+text+input.value.slice(e);const n=s+text.length;input.setSelectionRange(n,n);input.focus()}
-document.querySelectorAll(".emoji-btn").forEach(b=>b.addEventListener("click",()=>insertAtCursor(messageInput,b.textContent)));
-messageForm.addEventListener("submit",e=>{e.preventDefault();const text=messageInput.value.trim();if(!text)return;if(currentUser.role==="guest"){const now=Date.now();if(now-lastGuestSend<GUEST_COOLDOWN_MS){alert("The Coil rejects rapid whispers. Wait a moment.");return}lastGuestSend=now;localStorage.setItem("coil_last_guest_send",String(lastGuestSend))}const isGuest=currentUser.role==="guest";messages.push({id:createId(),uid:currentUser.uid,username:currentUser.username,rank:currentUser.rank,role:currentUser.role,text,createdAt:Date.now(),expiresAt:isGuest?Date.now()+GUEST_EXPIRY_MS:null});saveMessages();messageInput.value="";renderMessages()});
-clearChatBtn.addEventListener("click",()=>{if(currentUser.role!=="admin"){alert("Only an admin can erase the local test archive.");return}if(confirm("Clear local test chat messages on this device?")){messages=defaultMessages;saveMessages();renderMessages()}});
-identityBtn.addEventListener("click",()=>{const name=prompt("Choose your display name:",currentUser.username||"Guest Witness");if(!name)return;const clean=name.trim().slice(0,32);if(clean.length<2){alert("Name must be at least 2 characters.");return}currentUser.username=clean;saveCurrentUser();ensureCurrentUserMember();renderAll()});
-codeBtn.addEventListener("click",()=>{const code=prompt("Enter access code:");if(!code)return;const usedKey="coil_used_code_"+ONE_TIME_ADMIN_CODE;if(localStorage.getItem(usedKey)==="true"){alert("This sigil has already been consumed on this browser.");return}if(code.trim()===ONE_TIME_ADMIN_CODE){currentUser.role="admin";currentUser.rank="First Weeper";currentUser.status="sealed";currentUser.initiateNumber="000001";currentUser.badges=["Founder","Admin","The First Witness"];currentUser.bio=currentUser.bio||"The sigil bearer recognized by the Coil.";localStorage.setItem(usedKey,"true");saveCurrentUser();ensureCurrentUserMember();renderAll();alert("The First Weeper’s sigil has been accepted. Admin access granted.")}else alert("The Coil does not recognize this sigil.")});
-</script>
+  <div class="app">
+    <header class="px-5 py-4 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-4 min-w-0">
+        <img src="favicon.png" class="w-14 h-14 object-contain rounded-full border border-yellow-800/60 flex-shrink-0" alt="logo">
+        <div class="min-w-0">
+          <h1 class="font-cinzel text-2xl md:text-3xl gold-glow tracking-[.16em] uppercase truncate">The Serpent's Coil</h1>
+          <p class="text-xs text-gray-400 tracking-[.18em] uppercase" id="roomSubtitle">Connecting to the archive...</p>
+        </div>
+      </div>
+
+      <nav class="actions flex items-center gap-3">
+        <a class="btn" href="./profile.html?uid=me">My Portfolio</a>
+        <button class="btn" id="identityBtn" type="button">Identity</button>
+        <button class="btn" id="codeBtn" type="button">Access Code</button>
+        <a class="btn" href="./index.html">Return</a>
+      </nav>
+    </header>
+
+    <main class="chat-area">
+      <section class="main-chat">
+        <div class="room-bar p-3 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="status">Room</span>
+            <select id="roomSelect">
+              <option value="guest">Outer Coil</option>
+              <option value="approved">Inner Coil</option>
+              <option value="admin">Black Ledger</option>
+            </select>
+          </div>
+          <div class="status" id="roleStatus">Connecting...</div>
+        </div>
+
+        <div id="messages" class="messages"></div>
+
+        <div class="panel composer m-4 p-3 rounded-2xl">
+          <div class="flex items-center justify-between gap-3 mb-3">
+            <div class="status" id="roomRule">The archive is listening.</div>
+            <div class="status" id="messageCount">0 archived</div>
+          </div>
+
+          <div class="emoji-row mb-3">
+            <button type="button" class="emoji-btn">🎭</button>
+            <button type="button" class="emoji-btn">🜂</button>
+            <button type="button" class="emoji-btn">☿</button>
+            <button type="button" class="emoji-btn">🜏</button>
+            <button type="button" class="emoji-btn">⚚</button>
+            <button type="button" class="emoji-btn">☾</button>
+            <button type="button" class="emoji-btn">👁️</button>
+            <button type="button" class="emoji-btn">🕯️</button>
+            <button type="button" class="emoji-btn">🐍</button>
+            <button type="button" class="emoji-btn">🩸</button>
+            <button type="button" class="emoji-btn">📜</button>
+            <button type="button" class="emoji-btn">⚖️</button>
+            <button type="button" class="emoji-btn">🪽</button>
+            <button type="button" class="emoji-btn">🕳️</button>
+            <button type="button" class="emoji-btn">⛓️</button>
+            <button type="button" class="emoji-btn">🗝️</button>
+          </div>
+
+          <form id="messageForm" class="composer-form flex gap-3">
+            <input id="messageInput" maxlength="500" class="flex-1 rounded-xl px-4 py-3" placeholder="Speak into the Coil..." required disabled>
+            <button class="btn" type="submit" id="sendBtn" disabled>Send</button>
+          </form>
+        </div>
+      </section>
+
+      <aside class="sidebar p-4">
+        <div class="notice mb-4" id="roomNotice">Connecting to the archive...</div>
+        <h2 class="font-cinzel gold-glow text-xl mb-4 tracking-[.15em] uppercase">Initiates</h2>
+        <div id="members"></div>
+      </aside>
+    </main>
+  </div>
+
+  <script type="module">
+    import { firebaseConfig, ONE_TIME_ADMIN_CODE, GUEST_MESSAGE_LIFETIME_MS, GUEST_COOLDOWN_MS } from "./firebase-config.js";
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      doc,
+      getDoc,
+      setDoc,
+      addDoc,
+      deleteDoc,
+      updateDoc,
+      onSnapshot,
+      query,
+      where,
+      orderBy,
+      serverTimestamp,
+      limit,
+      getDocs
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    const messagesEl = document.getElementById("messages");
+    const membersEl = document.getElementById("members");
+    const messageForm = document.getElementById("messageForm");
+    const messageInput = document.getElementById("messageInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const messageCount = document.getElementById("messageCount");
+    const roleStatus = document.getElementById("roleStatus");
+    const roomRule = document.getElementById("roomRule");
+    const roomNotice = document.getElementById("roomNotice");
+    const roomSubtitle = document.getElementById("roomSubtitle");
+    const identityBtn = document.getElementById("identityBtn");
+    const codeBtn = document.getElementById("codeBtn");
+    const roomSelect = document.getElementById("roomSelect");
+
+    let app, auth, db;
+    let currentUser = null;
+    let currentRoom = localStorage.getItem("coil_current_room") || "guest";
+    let unsubscribeMessages = null;
+    let unsubscribeMembers = null;
+    let lastGuestSend = Number(localStorage.getItem("coil_last_guest_send") || "0");
+    let latestMessages = [];
+
+    const hasFirebaseConfig = Boolean(firebaseConfig && firebaseConfig.apiKey && firebaseConfig.projectId);
+
+    if (!hasFirebaseConfig) {
+      fail("Firebase config is empty. Fill firebase-config.js first.");
+    } else {
+      app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      db = getFirestore(app);
+
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) return;
+
+        currentUser = await loadOrCreateProfile(user.uid);
+        await updatePresence();
+        enableChat();
+        setupRoom(currentRoom);
+        listenMembers();
+      });
+
+      signInAnonymously(auth).catch((error) => {
+        fail("Anonymous sign-in failed: " + error.message);
+      });
+    }
+
+    function fail(text) {
+      roomSubtitle.textContent = "Connection failed";
+      roleStatus.textContent = "Offline";
+      roomNotice.textContent = text;
+      messageInput.disabled = true;
+      sendBtn.disabled = true;
+      console.error(text);
+    }
+
+    function enableChat() {
+      messageInput.disabled = false;
+      sendBtn.disabled = false;
+    }
+
+    async function loadOrCreateProfile(uid) {
+      const ref = doc(db, "profiles", uid);
+      const snap = await getDoc(ref);
+
+      if (snap.exists()) {
+        return { uid, ...snap.data() };
+      }
+
+      const username = localStorage.getItem("coil_username") || "Guest Witness";
+      const profile = {
+        uid,
+        username,
+        rank: "Guest",
+        role: "guest",
+        initiateNumber: "------",
+        status: "transient",
+        bio: "A temporary voice in the Outer Coil.",
+        badges: ["Transient Witness"],
+        createdAt: serverTimestamp(),
+        lastSeen: serverTimestamp()
+      };
+
+      await setDoc(ref, profile, { merge: true });
+      return profile;
+    }
+
+    async function updatePresence() {
+      if (!currentUser) return;
+
+      await setDoc(doc(db, "profiles", currentUser.uid), {
+        username: currentUser.username || "Guest Witness",
+        rank: currentUser.rank || "Guest",
+        role: currentUser.role || "guest",
+        initiateNumber: currentUser.initiateNumber || "------",
+        status: currentUser.status || "transient",
+        bio: currentUser.bio || "",
+        badges: currentUser.badges || [],
+        lastSeen: serverTimestamp()
+      }, { merge: true });
+    }
+
+    function canEnterRoom(room) {
+      const role = currentUser?.role || "guest";
+      if (room === "guest") return true;
+      if (room === "approved") return role === "approved" || role === "admin";
+      if (room === "admin") return role === "admin";
+      return false;
+    }
+
+    function setupRoom(room) {
+      if (!canEnterRoom(room)) {
+        alert("The Coil does not recognize your rank for this room.");
+        room = "guest";
+      }
+
+      currentRoom = room;
+      localStorage.setItem("coil_current_room", currentRoom);
+      roomSelect.value = currentRoom;
+      updateRoomText();
+
+      if (unsubscribeMessages) unsubscribeMessages();
+
+      const q = query(
+        collection(db, "messages"),
+        where("room", "==", currentRoom),
+        orderBy("createdAt", "asc"),
+        limit(100)
+      );
+
+      unsubscribeMessages = onSnapshot(q, async (snapshot) => {
+        latestMessages = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        await cleanupExpiredMessages();
+        renderMessages();
+      }, (error) => {
+        fail("Message listener failed: " + error.message);
+      });
+    }
+
+    function updateRoomText() {
+      const role = currentUser?.role || "guest";
+
+      if (currentRoom === "guest") {
+        roomSubtitle.textContent = "Outer Coil · Transient Whispers";
+        roomRule.textContent = "Guest messages fade after five minutes.";
+        roomNotice.innerHTML = "<strong>Outer Coil:</strong> Everyone may enter. Guest messages vanish after five minutes. No file uploads.";
+      } else if (currentRoom === "approved") {
+        roomSubtitle.textContent = "Inner Coil · Archived Voices";
+        roomRule.textContent = "Approved voices are archived.";
+        roomNotice.innerHTML = "<strong>Inner Coil:</strong> Approved members and admins may enter. Messages remain archived.";
+      } else {
+        roomSubtitle.textContent = "Black Ledger · Sealed Authority";
+        roomRule.textContent = "Admin records remain unless erased.";
+        roomNotice.innerHTML = "<strong>Black Ledger:</strong> Admin-only room. Records remain unless erased.";
+      }
+
+      roleStatus.textContent = `Role: ${role}`;
+    }
+
+    async function cleanupExpiredMessages() {
+      const now = Date.now();
+      const deletions = [];
+
+      latestMessages.forEach(msg => {
+        if (msg.expiresAt && msg.expiresAt <= now) {
+          deletions.push(deleteDoc(doc(db, "messages", msg.id)));
+        }
+      });
+
+      if (deletions.length) {
+        await Promise.allSettled(deletions);
+      }
+    }
+
+    function listenMembers() {
+      if (unsubscribeMembers) unsubscribeMembers();
+
+      const q = query(collection(db, "profiles"), orderBy("lastSeen", "desc"), limit(50));
+
+      unsubscribeMembers = onSnapshot(q, (snapshot) => {
+        membersEl.innerHTML = "";
+        snapshot.docs.forEach(d => {
+          const member = { uid: d.id, ...d.data() };
+          const a = document.createElement("a");
+          a.className = "member-card";
+          a.href = member.uid === currentUser.uid ? "./profile.html?uid=me" : "./profile.html?uid=" + encodeURIComponent(member.uid);
+          a.innerHTML = `
+            <div class="flex items-center gap-3">
+              <img src="favicon.png" class="avatar" alt="">
+              <div>
+                <div class="font-cinzel text-[#d6a24a] font-bold">${escapeHtml(member.username)}</div>
+                <div class="text-xs text-gray-400 mt-1">${escapeHtml(member.rank || "Guest")} · ${escapeHtml(member.role || "guest")}</div>
+              </div>
+            </div>
+            <div class="text-xs text-gray-500 mt-2">${escapeHtml(member.bio || "No record available.")}</div>
+          `;
+          membersEl.appendChild(a);
+        });
+      });
+    }
+
+    function renderMessages() {
+      const now = Date.now();
+      const visible = latestMessages.filter(msg => !msg.expiresAt || msg.expiresAt > now);
+
+      messagesEl.innerHTML = `
+        <div class="text-center text-sm text-yellow-700/80 my-4 font-cinzel tracking-[.18em] uppercase">
+          The archive is listening.
+        </div>
+      `;
+
+      visible.forEach(msg => {
+        const self = currentUser && msg.uid === currentUser.uid;
+        const admin = msg.role === "admin";
+        const fading = msg.expiresAt && msg.expiresAt - now < 60000;
+        const d = document.createElement("div");
+        d.className = "message " + (self ? "self " : "") + (admin ? "admin " : "") + (fading ? "fading" : "");
+
+        const expiry = msg.expiresAt ? ` · fades in ${Math.max(0, Math.ceil((msg.expiresAt - now) / 1000))}s` : "";
+        const pill = msg.role === "admin" ? "pill adminpill" : msg.role === "guest" ? "pill guest" : "pill";
+
+        d.innerHTML = `
+          <div class="meta">
+            <img src="favicon.png" class="avatar" alt="">
+            <a class="username" href="${self ? "./profile.html?uid=me" : "./profile.html?uid=" + encodeURIComponent(msg.uid)}">${escapeHtml(msg.username)}</a>
+            <span class="${pill}">${escapeHtml(msg.rank || "Guest")}</span>
+            <span class="time">${formatDate(msg.createdAt)}${expiry}</span>
+            ${self || currentUser?.role === "admin" ? `<button class="btn danger" data-delete="${escapeHtml(msg.id)}" type="button">Delete</button>` : ""}
+          </div>
+          <div class="leading-relaxed">${escapeHtml(msg.text)}</div>
+        `;
+
+        messagesEl.appendChild(d);
+      });
+
+      document.querySelectorAll("[data-delete]").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const id = btn.getAttribute("data-delete");
+          await deleteDoc(doc(db, "messages", id));
+        });
+      });
+
+      messageCount.textContent = `${visible.length} archived`;
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function formatDate(timestamp) {
+      try {
+        const date = timestamp?.toDate ? timestamp.toDate() : new Date(timestamp || Date.now());
+        return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      } catch {
+        return "";
+      }
+    }
+
+    function insertAtCursor(input, text) {
+      const start = input.selectionStart ?? input.value.length;
+      const end = input.selectionEnd ?? input.value.length;
+      input.value = input.value.slice(0, start) + text + input.value.slice(end);
+      const newPos = start + text.length;
+      input.setSelectionRange(newPos, newPos);
+      input.focus();
+    }
+
+    document.querySelectorAll(".emoji-btn").forEach(btn => {
+      btn.addEventListener("click", () => insertAtCursor(messageInput, btn.textContent));
+    });
+
+    messageForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const text = messageInput.value.trim();
+      if (!text || !currentUser) return;
+
+      if (!canEnterRoom(currentRoom)) {
+        alert("The Coil does not recognize your rank for this room.");
+        setupRoom("guest");
+        return;
+      }
+
+      if (currentUser.role === "guest") {
+        const now = Date.now();
+        if (now - lastGuestSend < GUEST_COOLDOWN_MS) {
+          alert("The Coil rejects rapid whispers. Wait a moment.");
+          return;
+        }
+        lastGuestSend = now;
+        localStorage.setItem("coil_last_guest_send", String(lastGuestSend));
+      }
+
+      const isGuestRoom = currentRoom === "guest";
+      const isGuestUser = currentUser.role === "guest";
+
+      await addDoc(collection(db, "messages"), {
+        room: currentRoom,
+        uid: currentUser.uid,
+        username: currentUser.username || "Guest Witness",
+        rank: currentUser.rank || "Guest",
+        role: currentUser.role || "guest",
+        text,
+        createdAt: serverTimestamp(),
+        expiresAt: isGuestRoom || isGuestUser ? Date.now() + GUEST_MESSAGE_LIFETIME_MS : null
+      });
+
+      messageInput.value = "";
+    });
+
+    roomSelect.addEventListener("change", () => setupRoom(roomSelect.value));
+
+    identityBtn.addEventListener("click", async () => {
+      if (!currentUser) return;
+
+      const name = prompt("Choose your display name:", currentUser.username || "Guest Witness");
+      if (!name) return;
+
+      const clean = name.trim().slice(0, 32);
+      if (clean.length < 2) {
+        alert("Name must be at least 2 characters.");
+        return;
+      }
+
+      currentUser.username = clean;
+      localStorage.setItem("coil_username", clean);
+      await updateDoc(doc(db, "profiles", currentUser.uid), { username: clean, lastSeen: serverTimestamp() });
+    });
+
+    codeBtn.addEventListener("click", async () => {
+      if (!currentUser) return;
+
+      const code = prompt("Enter access code:");
+      if (!code) return;
+
+      if (code.trim() !== ONE_TIME_ADMIN_CODE) {
+        alert("The Coil does not recognize this sigil.");
+        return;
+      }
+
+      const codeRef = doc(db, "usedCodes", ONE_TIME_ADMIN_CODE);
+      const snap = await getDoc(codeRef);
+
+      if (snap.exists()) {
+        alert("This sigil has already been consumed.");
+        return;
+      }
+
+      await setDoc(codeRef, {
+        usedBy: currentUser.uid,
+        usedAt: serverTimestamp()
+      });
+
+      currentUser.role = "admin";
+      currentUser.rank = "First Weeper";
+      currentUser.status = "sealed";
+      currentUser.initiateNumber = "000001";
+      currentUser.badges = ["Founder", "Admin", "The First Witness"];
+
+      await setDoc(doc(db, "profiles", currentUser.uid), {
+        ...currentUser,
+        lastSeen: serverTimestamp()
+      }, { merge: true });
+
+      alert("The First Weeper’s sigil has been accepted. Admin access granted.");
+      setupRoom("admin");
+    });
+
+    function escapeHtml(text) {
+      return String(text || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+  </script>
 </body>
 </html>
