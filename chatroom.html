@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Serpent's Coil</title>
-  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="icon" type="image/png" href="favicon.png" />
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
@@ -17,54 +17,59 @@
       --bone: #d8d1bf;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
-      background:
-        radial-gradient(circle at 50% 12%, rgba(214,162,74,0.12), transparent 32%),
-        radial-gradient(circle at center, rgba(214,162,74,0.06), #000 46%, #000 100%);
+      background: #000;
       color: var(--bone);
       font-family: Inter, sans-serif;
       min-height: 100vh;
       overflow: hidden;
     }
 
-    .font-cinzel { font-family: Cinzel, serif; }
+    .font-cinzel {
+      font-family: Cinzel, serif;
+    }
 
     .gold-glow {
       color: var(--gold);
-      text-shadow: 0 0 16px rgba(214,162,74,.5);
+      text-shadow: 0 0 16px rgba(214, 162, 74, 0.5);
     }
 
-    .app {
+    .app-shell {
       height: 100vh;
       display: grid;
       grid-template-rows: auto 1fr;
     }
 
     header {
-      border-bottom: 1px solid rgba(155,106,31,.7);
-      background: rgba(0,0,0,.88);
+      border-bottom: 1px solid rgba(155, 106, 31, 0.7);
+      background: rgba(0, 0, 0, 0.9);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
+      z-index: 20;
     }
 
     .chat-area {
       display: grid;
-      grid-template-columns: minmax(0,1fr) 350px;
+      grid-template-columns: minmax(0, 1fr) 330px;
       min-height: 0;
+      height: 100%;
     }
 
     .main-chat {
       display: grid;
       grid-template-rows: auto 1fr auto;
+      min-width: 0;
       min-height: 0;
     }
 
     .room-bar {
-      border-bottom: 1px solid rgba(155,106,31,.45);
-      background: rgba(0,0,0,.35);
+      border-bottom: 1px solid rgba(155, 106, 31, 0.45);
+      background: rgba(0, 0, 0, 0.35);
     }
 
     .messages {
@@ -75,9 +80,9 @@
     }
 
     .panel {
-      background: rgba(17,17,17,.9);
-      border: 1px solid rgba(155,106,31,.55);
-      box-shadow: 0 0 24px rgba(214,162,74,.08);
+      background: rgba(17, 17, 17, 0.92);
+      border: 1px solid rgba(155, 106, 31, 0.55);
+      box-shadow: 0 0 24px rgba(214, 162, 74, 0.08);
     }
 
     .message {
@@ -85,32 +90,35 @@
       margin-bottom: 1rem;
       padding: 1rem;
       border-radius: 1rem;
-      background: rgba(31,41,55,.75);
-      border: 1px solid rgba(155,106,31,.28);
+      background: rgba(31, 41, 55, 0.75);
+      border: 1px solid rgba(155, 106, 31, 0.28);
       overflow-wrap: anywhere;
-      transition: opacity .3s ease;
+      word-break: break-word;
+      transition: opacity 0.25s ease;
     }
 
     .message.self {
       margin-left: auto;
-      background: rgba(214,162,74,.18);
-      border-color: rgba(214,162,74,.55);
+      background: rgba(214, 162, 74, 0.18);
+      border-color: rgba(214, 162, 74, 0.55);
     }
 
     .message.admin {
-      background: rgba(214,162,74,.22);
-      border-color: rgba(241,196,15,.7);
-      box-shadow: 0 0 20px rgba(214,162,74,.12);
+      background: rgba(214, 162, 74, 0.22);
+      border-color: rgba(241, 196, 15, 0.7);
+      box-shadow: 0 0 20px rgba(214, 162, 74, 0.12);
     }
 
-    .message.fading { opacity: .45; }
+    .message.fading {
+      opacity: 0.45;
+    }
 
-    .meta {
+    .message-meta {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: .45rem;
-      margin-bottom: .5rem;
+      gap: 0.45rem;
+      margin-bottom: 0.5rem;
     }
 
     .avatar {
@@ -118,7 +126,8 @@
       height: 34px;
       object-fit: contain;
       border-radius: 999px;
-      border: 1px solid rgba(214,162,74,.45);
+      border: 1px solid rgba(214, 162, 74, 0.45);
+      background: rgba(0, 0, 0, 0.35);
     }
 
     .username {
@@ -126,60 +135,70 @@
       font-family: Cinzel, serif;
       font-weight: 700;
       text-decoration: none;
+      cursor: pointer;
     }
 
     .username:hover {
       color: #ffd27a;
-      text-shadow: 0 0 12px rgba(214,162,74,.6);
+      text-shadow: 0 0 12px rgba(214, 162, 74, 0.6);
     }
 
-    .pill {
+    .rank-pill {
       display: inline-block;
-      padding: .12rem .45rem;
-      border: 1px solid rgba(214,162,74,.45);
+      padding: 0.12rem 0.45rem;
+      border: 1px solid rgba(214, 162, 74, 0.45);
       border-radius: 999px;
-      font-size: .7rem;
+      font-size: 0.7rem;
       color: #d6b36a;
-      background: rgba(0,0,0,.35);
+      background: rgba(0, 0, 0, 0.35);
     }
 
-    .guest { color:#9ca3af; border-color:rgba(156,163,175,.35); }
-    .adminpill { color:#f1c40f; border-color:rgba(241,196,15,.7); }
+    .rank-guest {
+      color: #9ca3af;
+      border-color: rgba(156, 163, 175, 0.35);
+    }
+
+    .rank-admin {
+      color: #f1c40f;
+      border-color: rgba(241, 196, 15, 0.7);
+    }
 
     .time {
-      font-size: .72rem;
+      font-size: 0.72rem;
       color: #6b7280;
     }
 
-    .btn, select {
+    .btn,
+    select {
       border: 1px solid var(--gold-muted);
       color: var(--gold);
-      padding: .68rem .95rem;
-      border-radius: .65rem;
-      background: rgba(0,0,0,.35);
-      transition: .2s;
+      padding: 0.68rem 0.95rem;
+      border-radius: 0.65rem;
+      background: rgba(0, 0, 0, 0.35);
+      transition: 0.2s ease;
       font-family: Cinzel, serif;
-      letter-spacing: .08em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      font-size: .78rem;
+      font-size: 0.78rem;
       text-decoration: none;
       white-space: nowrap;
       cursor: pointer;
     }
 
-    .btn:hover {
+    .btn:hover,
+    select:hover {
       color: #ffd27a;
-      box-shadow: 0 0 18px rgba(214,162,74,.22);
+      box-shadow: 0 0 18px rgba(214, 162, 74, 0.22);
     }
 
-    .danger {
+    .btn-danger {
       color: #fca5a5;
-      border-color: rgba(185,28,28,.7);
+      border-color: rgba(185, 28, 28, 0.7);
     }
 
     input {
-      background: rgba(0,0,0,.45);
-      border: 1px solid rgba(155,106,31,.7);
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(155, 106, 31, 0.7);
       color: var(--bone);
       outline: none;
       min-width: 0;
@@ -187,123 +206,159 @@
 
     input:focus {
       border-color: var(--gold);
-      box-shadow: 0 0 12px rgba(214,162,74,.18);
+      box-shadow: 0 0 12px rgba(214, 162, 74, 0.18);
     }
 
     .sidebar {
-      border-left: 1px solid rgba(155,106,31,.45);
-      background: rgba(0,0,0,.35);
+      border-left: 1px solid rgba(155, 106, 31, 0.45);
+      background: rgba(0, 0, 0, 0.35);
       overflow-y: auto;
+      min-height: 0;
     }
 
     .member-card {
       display: block;
-      border: 1px solid rgba(155,106,31,.35);
-      background: rgba(17,17,17,.82);
-      border-radius: .85rem;
-      padding: .8rem;
-      margin-bottom: .75rem;
+      border: 1px solid rgba(155, 106, 31, 0.35);
+      background: rgba(17, 17, 17, 0.82);
+      border-radius: 0.85rem;
+      padding: 0.8rem;
+      margin-bottom: 0.75rem;
       text-decoration: none;
       color: var(--bone);
-      transition: .2s;
+      transition: 0.2s ease;
     }
 
     .member-card:hover {
       border-color: var(--gold);
-      box-shadow: 0 0 14px rgba(214,162,74,.15);
+      box-shadow: 0 0 14px rgba(214, 162, 74, 0.15);
+      transform: translateY(-1px);
     }
 
     .emoji-row {
-      display:flex;
-      gap:.5rem;
-      flex-wrap:wrap;
-      max-height:96px;
-      overflow-y:auto;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      max-height: 96px;
+      overflow-y: auto;
+      padding-right: 0.25rem;
     }
 
     .emoji-btn {
-      background: rgba(0,0,0,.35);
-      border: 1px solid rgba(214,162,74,.35);
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(214, 162, 74, 0.35);
       color: #d6a24a;
       border-radius: 10px;
       padding: 6px 10px;
-      transition: .2s;
+      transition: 0.2s ease;
       cursor: pointer;
       font-size: 1.15rem;
       line-height: 1.2;
     }
 
     .emoji-btn:hover {
-      border-color:#d6a24a;
-      box-shadow:0 0 12px rgba(214,162,74,.22);
-      transform:scale(1.08);
+      border-color: #d6a24a;
+      box-shadow: 0 0 12px rgba(214, 162, 74, 0.22);
+      transform: scale(1.08);
     }
 
     .notice {
-      border: 1px solid rgba(155,106,31,.35);
-      background: rgba(0,0,0,.38);
+      border: 1px solid rgba(155, 106, 31, 0.35);
+      background: rgba(0, 0, 0, 0.38);
       color: #b8a06a;
-      border-radius: .85rem;
-      padding: .75rem;
-      font-size: .85rem;
+      border-radius: 0.85rem;
+      padding: 0.75rem;
+      font-size: 0.85rem;
       line-height: 1.45;
     }
 
-    .status {
-      color:#8b6f32;
-      font-size:.78rem;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-family:Cinzel,serif;
+    .status-line {
+      color: #8b6f32;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-family: Cinzel, serif;
     }
 
-    @media(max-width:980px) {
-      body { overflow:auto; }
-      .app { height:auto; min-height:100vh; }
-      .chat-area { grid-template-columns:1fr; }
-      .main-chat { min-height:calc(100vh - 92px); }
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 980px) {
+      body {
+        overflow: auto;
+      }
+
+      .app-shell {
+        height: auto;
+        min-height: 100vh;
+      }
+
+      .chat-area {
+        grid-template-columns: 1fr;
+      }
+
+      .main-chat {
+        min-height: calc(100vh - 92px);
+      }
+
       .sidebar {
-        border-left:0;
-        border-top:1px solid rgba(155,106,31,.45);
-        max-height:340px;
+        border-left: 0;
+        border-top: 1px solid rgba(155, 106, 31, 0.45);
+        max-height: 340px;
       }
-      header { flex-wrap:wrap; }
-      .actions {
-        width:100%;
-        justify-content:flex-start;
-        overflow-x:auto;
-        padding-bottom:.2rem;
+
+      header {
+        flex-wrap: wrap;
+      }
+
+      .header-actions {
+        width: 100%;
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 0.2rem;
       }
     }
 
-    @media(max-width:540px) {
-      .message { max-width:100%; }
-      .composer { margin:.65rem; padding:.65rem; }
-      .composer-form { flex-direction:column; }
-      .btn, select {
-        width:100%;
-        text-align:center;
-        justify-content:center;
+    @media (max-width: 540px) {
+      .message {
+        max-width: 100%;
+      }
+
+      .composer {
+        margin: 0.65rem;
+        padding: 0.65rem;
+      }
+
+      .composer-form {
+        flex-direction: column;
+      }
+
+      .btn,
+      select {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="app">
+  <div class="app-shell">
     <header class="px-5 py-4 flex items-center justify-between gap-4">
       <div class="flex items-center gap-4 min-w-0">
-        <img src="favicon.png" class="w-14 h-14 object-contain rounded-full border border-yellow-800/60 flex-shrink-0" alt="logo">
+        <img src="favicon.png" alt="The Order" class="w-14 h-14 object-contain rounded-full border border-yellow-800/60 shadow-[0_0_16px_rgba(214,162,74,.22)] flex-shrink-0">
         <div class="min-w-0">
           <h1 class="font-cinzel text-2xl md:text-3xl gold-glow tracking-[.16em] uppercase truncate">The Serpent's Coil</h1>
           <p class="text-xs text-gray-400 tracking-[.18em] uppercase" id="roomSubtitle">Connecting to the archive...</p>
         </div>
       </div>
 
-      <nav class="actions flex items-center gap-3">
+      <nav class="header-actions flex items-center gap-3">
         <a class="btn" href="./profile.html?uid=me">My Portfolio</a>
         <button class="btn" id="identityBtn" type="button">Identity</button>
         <button class="btn" id="codeBtn" type="button">Access Code</button>
+        <button class="btn btn-danger hidden" id="clearChatBtn" type="button">Clear Room</button>
         <a class="btn" href="./index.html">Return</a>
       </nav>
     </header>
@@ -312,32 +367,32 @@
       <section class="main-chat">
         <div class="room-bar p-3 flex flex-wrap items-center justify-between gap-3">
           <div class="flex flex-wrap items-center gap-3">
-            <span class="status">Room</span>
+            <span class="status-line">Room</span>
             <select id="roomSelect">
               <option value="guest">Outer Coil</option>
               <option value="approved">Inner Coil</option>
               <option value="admin">Black Ledger</option>
             </select>
           </div>
-          <div class="status" id="roleStatus">Connecting...</div>
+
+          <div class="status-line" id="roleStatus">Connecting...</div>
         </div>
 
         <div id="messages" class="messages"></div>
 
         <div class="panel composer m-4 p-3 rounded-2xl">
           <div class="flex items-center justify-between gap-3 mb-3">
-            <div class="status" id="roomRule">The archive is listening.</div>
-            <div class="status" id="messageCount">0 archived</div>
+            <div class="status-line" id="roomRule">The archive is listening.</div>
+            <div class="status-line" id="messageCount">0 archived</div>
           </div>
 
-          <div class="emoji-row mb-3">
+          <div class="emoji-row mb-3" id="emojiBar">
             <button type="button" class="emoji-btn">🎭</button>
             <button type="button" class="emoji-btn">🜂</button>
             <button type="button" class="emoji-btn">☿</button>
             <button type="button" class="emoji-btn">🜏</button>
             <button type="button" class="emoji-btn">⚚</button>
             <button type="button" class="emoji-btn">☾</button>
-            <button type="button" class="emoji-btn">👁️</button>
             <button type="button" class="emoji-btn">🕯️</button>
             <button type="button" class="emoji-btn">🐍</button>
             <button type="button" class="emoji-btn">🩸</button>
@@ -351,7 +406,7 @@
 
           <form id="messageForm" class="composer-form flex gap-3">
             <input id="messageInput" maxlength="500" class="flex-1 rounded-xl px-4 py-3" placeholder="Speak into the Coil..." required disabled>
-            <button class="btn" type="submit" id="sendBtn" disabled>Send</button>
+            <button class="btn" id="sendBtn" type="submit" disabled>Send</button>
           </form>
         </div>
       </section>
@@ -365,10 +420,31 @@
   </div>
 
   <script type="module">
-    import { firebaseConfig, ONE_TIME_ADMIN_CODE, GUEST_MESSAGE_LIFETIME_MS, GUEST_COOLDOWN_MS } from "./firebase-config.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyC7jzp92jTjtGX9Dxp_MMTcaEGHsveufB0",
+      authDomain: "weeping-order.firebaseapp.com",
+      projectId: "weeping-order",
+      storageBucket: "weeping-order.firebasestorage.app",
+      messagingSenderId: "439201717119",
+      appId: "1:439201717119:web:924a56ec0baf738972d84a",
+      measurementId: "G-EQ3CC4EM5C"
+    };
+
+    const ADMIN_CODES = [
+      "FIRST-WEEPER-0001",
+      "FIRST-WEEPER-0002",
+      "SKYHERO-ADMIN-TEST"
+    ];
+
+    const GUEST_MESSAGE_LIFETIME_MS = 5 * 60 * 1000;
+    const GUEST_COOLDOWN_MS = 4000;
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+    import {
+      getAuth,
+      signInAnonymously,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
     import {
       getFirestore,
       collection,
@@ -392,6 +468,7 @@
     const messageForm = document.getElementById("messageForm");
     const messageInput = document.getElementById("messageInput");
     const sendBtn = document.getElementById("sendBtn");
+    const clearChatBtn = document.getElementById("clearChatBtn");
     const messageCount = document.getElementById("messageCount");
     const roleStatus = document.getElementById("roleStatus");
     const roomRule = document.getElementById("roomRule");
@@ -401,37 +478,33 @@
     const codeBtn = document.getElementById("codeBtn");
     const roomSelect = document.getElementById("roomSelect");
 
-    let app, auth, db;
+    let app;
+    let auth;
+    let db;
     let currentUser = null;
     let currentRoom = localStorage.getItem("coil_current_room") || "guest";
+    let latestMessages = [];
     let unsubscribeMessages = null;
     let unsubscribeMembers = null;
     let lastGuestSend = Number(localStorage.getItem("coil_last_guest_send") || "0");
-    let latestMessages = [];
 
-    const hasFirebaseConfig = Boolean(firebaseConfig && firebaseConfig.apiKey && firebaseConfig.projectId);
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app);
 
-    if (!hasFirebaseConfig) {
-      fail("Firebase config is empty. Fill firebase-config.js first.");
-    } else {
-      app = initializeApp(firebaseConfig);
-      auth = getAuth(app);
-      db = getFirestore(app);
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) return;
 
-      onAuthStateChanged(auth, async (user) => {
-        if (!user) return;
+      currentUser = await loadOrCreateProfile(user.uid);
+      await touchProfile();
+      enableChat();
+      setupRoom(currentRoom);
+      listenMembers();
+    });
 
-        currentUser = await loadOrCreateProfile(user.uid);
-        await updatePresence();
-        enableChat();
-        setupRoom(currentRoom);
-        listenMembers();
-      });
-
-      signInAnonymously(auth).catch((error) => {
-        fail("Anonymous sign-in failed: " + error.message);
-      });
-    }
+    signInAnonymously(auth).catch((error) => {
+      fail("Anonymous sign-in failed: " + error.message);
+    });
 
     function fail(text) {
       roomSubtitle.textContent = "Connection failed";
@@ -452,10 +525,14 @@
       const snap = await getDoc(ref);
 
       if (snap.exists()) {
-        return { uid, ...snap.data() };
+        return {
+          uid,
+          ...snap.data()
+        };
       }
 
       const username = localStorage.getItem("coil_username") || "Guest Witness";
+
       const profile = {
         uid,
         username,
@@ -470,10 +547,11 @@
       };
 
       await setDoc(ref, profile, { merge: true });
+
       return profile;
     }
 
-    async function updatePresence() {
+    async function touchProfile() {
       if (!currentUser) return;
 
       await setDoc(doc(db, "profiles", currentUser.uid), {
@@ -490,13 +568,17 @@
 
     function canEnterRoom(room) {
       const role = currentUser?.role || "guest";
+
       if (room === "guest") return true;
       if (room === "approved") return role === "approved" || role === "admin";
       if (room === "admin") return role === "admin";
+
       return false;
     }
 
     function setupRoom(room) {
+      if (!currentUser) return;
+
       if (!canEnterRoom(room)) {
         alert("The Coil does not recognize your rank for this room.");
         room = "guest";
@@ -505,6 +587,7 @@
       currentRoom = room;
       localStorage.setItem("coil_current_room", currentRoom);
       roomSelect.value = currentRoom;
+
       updateRoomText();
 
       if (unsubscribeMessages) unsubscribeMessages();
@@ -517,7 +600,11 @@
       );
 
       unsubscribeMessages = onSnapshot(q, async (snapshot) => {
-        latestMessages = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        latestMessages = snapshot.docs.map(d => ({
+          id: d.id,
+          ...d.data()
+        }));
+
         await cleanupExpiredMessages();
         renderMessages();
       }, (error) => {
@@ -527,6 +614,8 @@
 
     function updateRoomText() {
       const role = currentUser?.role || "guest";
+
+      clearChatBtn.classList.toggle("hidden", role !== "admin");
 
       if (currentRoom === "guest") {
         roomSubtitle.textContent = "Outer Coil · Transient Whispers";
@@ -542,18 +631,15 @@
         roomNotice.innerHTML = "<strong>Black Ledger:</strong> Admin-only room. Records remain unless erased.";
       }
 
-      roleStatus.textContent = `Role: ${role}`;
+      roleStatus.textContent = "Role: " + role;
     }
 
     async function cleanupExpiredMessages() {
       const now = Date.now();
-      const deletions = [];
 
-      latestMessages.forEach(msg => {
-        if (msg.expiresAt && msg.expiresAt <= now) {
-          deletions.push(deleteDoc(doc(db, "messages", msg.id)));
-        }
-      });
+      const deletions = latestMessages
+        .filter(msg => msg.expiresAt && msg.expiresAt <= now)
+        .map(msg => deleteDoc(doc(db, "messages", msg.id)));
 
       if (deletions.length) {
         await Promise.allSettled(deletions);
@@ -563,16 +649,28 @@
     function listenMembers() {
       if (unsubscribeMembers) unsubscribeMembers();
 
-      const q = query(collection(db, "profiles"), orderBy("lastSeen", "desc"), limit(50));
+      const q = query(
+        collection(db, "profiles"),
+        orderBy("lastSeen", "desc"),
+        limit(50)
+      );
 
       unsubscribeMembers = onSnapshot(q, (snapshot) => {
         membersEl.innerHTML = "";
+
         snapshot.docs.forEach(d => {
-          const member = { uid: d.id, ...d.data() };
-          const a = document.createElement("a");
-          a.className = "member-card";
-          a.href = member.uid === currentUser.uid ? "./profile.html?uid=me" : "./profile.html?uid=" + encodeURIComponent(member.uid);
-          a.innerHTML = `
+          const member = {
+            uid: d.id,
+            ...d.data()
+          };
+
+          const card = document.createElement("a");
+          card.className = "member-card";
+          card.href = member.uid === currentUser.uid
+            ? "./profile.html?uid=me"
+            : "./profile.html?uid=" + encodeURIComponent(member.uid);
+
+          card.innerHTML = `
             <div class="flex items-center gap-3">
               <img src="favicon.png" class="avatar" alt="">
               <div>
@@ -582,14 +680,18 @@
             </div>
             <div class="text-xs text-gray-500 mt-2">${escapeHtml(member.bio || "No record available.")}</div>
           `;
-          membersEl.appendChild(a);
+
+          membersEl.appendChild(card);
         });
       });
     }
 
     function renderMessages() {
       const now = Date.now();
-      const visible = latestMessages.filter(msg => !msg.expiresAt || msg.expiresAt > now);
+
+      const visibleMessages = latestMessages.filter(msg => {
+        return !msg.expiresAt || msg.expiresAt > now;
+      });
 
       messagesEl.innerHTML = `
         <div class="text-center text-sm text-yellow-700/80 my-4 font-cinzel tracking-[.18em] uppercase">
@@ -597,45 +699,67 @@
         </div>
       `;
 
-      visible.forEach(msg => {
-        const self = currentUser && msg.uid === currentUser.uid;
-        const admin = msg.role === "admin";
+      visibleMessages.forEach(msg => {
+        const isSelf = currentUser && msg.uid === currentUser.uid;
+        const isAdmin = msg.role === "admin";
         const fading = msg.expiresAt && msg.expiresAt - now < 60000;
-        const d = document.createElement("div");
-        d.className = "message " + (self ? "self " : "") + (admin ? "admin " : "") + (fading ? "fading" : "");
 
-        const expiry = msg.expiresAt ? ` · fades in ${Math.max(0, Math.ceil((msg.expiresAt - now) / 1000))}s` : "";
-        const pill = msg.role === "admin" ? "pill adminpill" : msg.role === "guest" ? "pill guest" : "pill";
+        const div = document.createElement("div");
+        div.className =
+          "message " +
+          (isSelf ? "self " : "") +
+          (isAdmin ? "admin " : "") +
+          (fading ? "fading" : "");
 
-        d.innerHTML = `
-          <div class="meta">
+        const expiresText = msg.expiresAt
+          ? " · fades in " + Math.max(0, Math.ceil((msg.expiresAt - now) / 1000)) + "s"
+          : "";
+
+        const rankClass =
+          msg.role === "admin"
+            ? "rank-pill rank-admin"
+            : msg.role === "guest"
+              ? "rank-pill rank-guest"
+              : "rank-pill";
+
+        div.innerHTML = `
+          <div class="message-meta">
             <img src="favicon.png" class="avatar" alt="">
-            <a class="username" href="${self ? "./profile.html?uid=me" : "./profile.html?uid=" + encodeURIComponent(msg.uid)}">${escapeHtml(msg.username)}</a>
-            <span class="${pill}">${escapeHtml(msg.rank || "Guest")}</span>
-            <span class="time">${formatDate(msg.createdAt)}${expiry}</span>
-            ${self || currentUser?.role === "admin" ? `<button class="btn danger" data-delete="${escapeHtml(msg.id)}" type="button">Delete</button>` : ""}
+            <a class="username" href="${isSelf ? "./profile.html?uid=me" : "./profile.html?uid=" + encodeURIComponent(msg.uid)}">
+              ${escapeHtml(msg.username)}
+            </a>
+            <span class="${rankClass}">${escapeHtml(msg.rank || "Guest")}</span>
+            <span class="time">${formatDate(msg.createdAt)}${expiresText}</span>
+            ${
+              isSelf || currentUser?.role === "admin"
+                ? `<button class="btn btn-danger" data-delete="${escapeHtml(msg.id)}" type="button">Delete</button>`
+                : ""
+            }
           </div>
           <div class="leading-relaxed">${escapeHtml(msg.text)}</div>
         `;
 
-        messagesEl.appendChild(d);
+        messagesEl.appendChild(div);
       });
 
-      document.querySelectorAll("[data-delete]").forEach(btn => {
-        btn.addEventListener("click", async () => {
-          const id = btn.getAttribute("data-delete");
+      document.querySelectorAll("[data-delete]").forEach(button => {
+        button.addEventListener("click", async () => {
+          const id = button.getAttribute("data-delete");
           await deleteDoc(doc(db, "messages", id));
         });
       });
 
-      messageCount.textContent = `${visible.length} archived`;
+      messageCount.textContent = visibleMessages.length + " archived";
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
     function formatDate(timestamp) {
       try {
         const date = timestamp?.toDate ? timestamp.toDate() : new Date(timestamp || Date.now());
-        return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+        return date.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit"
+        });
       } catch {
         return "";
       }
@@ -644,20 +768,27 @@
     function insertAtCursor(input, text) {
       const start = input.selectionStart ?? input.value.length;
       const end = input.selectionEnd ?? input.value.length;
-      input.value = input.value.slice(0, start) + text + input.value.slice(end);
-      const newPos = start + text.length;
-      input.setSelectionRange(newPos, newPos);
+      const before = input.value.slice(0, start);
+      const after = input.value.slice(end);
+
+      input.value = before + text + after;
+
+      const newPosition = start + text.length;
+      input.setSelectionRange(newPosition, newPosition);
       input.focus();
     }
 
-    document.querySelectorAll(".emoji-btn").forEach(btn => {
-      btn.addEventListener("click", () => insertAtCursor(messageInput, btn.textContent));
+    document.querySelectorAll(".emoji-btn").forEach(button => {
+      button.addEventListener("click", () => {
+        insertAtCursor(messageInput, button.textContent);
+      });
     });
 
-    messageForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
+    messageForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
 
       const text = messageInput.value.trim();
+
       if (!text || !currentUser) return;
 
       if (!canEnterRoom(currentRoom)) {
@@ -668,16 +799,20 @@
 
       if (currentUser.role === "guest") {
         const now = Date.now();
+
         if (now - lastGuestSend < GUEST_COOLDOWN_MS) {
           alert("The Coil rejects rapid whispers. Wait a moment.");
           return;
         }
+
         lastGuestSend = now;
         localStorage.setItem("coil_last_guest_send", String(lastGuestSend));
       }
 
-      const isGuestRoom = currentRoom === "guest";
-      const isGuestUser = currentUser.role === "guest";
+      const expiresAt =
+        currentRoom === "guest" || currentUser.role === "guest"
+          ? Date.now() + GUEST_MESSAGE_LIFETIME_MS
+          : null;
 
       await addDoc(collection(db, "messages"), {
         room: currentRoom,
@@ -687,43 +822,54 @@
         role: currentUser.role || "guest",
         text,
         createdAt: serverTimestamp(),
-        expiresAt: isGuestRoom || isGuestUser ? Date.now() + GUEST_MESSAGE_LIFETIME_MS : null
+        expiresAt
       });
 
       messageInput.value = "";
     });
 
-    roomSelect.addEventListener("change", () => setupRoom(roomSelect.value));
+    roomSelect.addEventListener("change", () => {
+      setupRoom(roomSelect.value);
+    });
 
     identityBtn.addEventListener("click", async () => {
       if (!currentUser) return;
 
       const name = prompt("Choose your display name:", currentUser.username || "Guest Witness");
+
       if (!name) return;
 
-      const clean = name.trim().slice(0, 32);
-      if (clean.length < 2) {
+      const cleanName = name.trim().slice(0, 32);
+
+      if (cleanName.length < 2) {
         alert("Name must be at least 2 characters.");
         return;
       }
 
-      currentUser.username = clean;
-      localStorage.setItem("coil_username", clean);
-      await updateDoc(doc(db, "profiles", currentUser.uid), { username: clean, lastSeen: serverTimestamp() });
+      currentUser.username = cleanName;
+      localStorage.setItem("coil_username", cleanName);
+
+      await updateDoc(doc(db, "profiles", currentUser.uid), {
+        username: cleanName,
+        lastSeen: serverTimestamp()
+      });
     });
 
     codeBtn.addEventListener("click", async () => {
       if (!currentUser) return;
 
       const code = prompt("Enter access code:");
+
       if (!code) return;
 
-      if (code.trim() !== ONE_TIME_ADMIN_CODE) {
+      const cleanCode = code.trim();
+
+      if (!ADMIN_CODES.includes(cleanCode)) {
         alert("The Coil does not recognize this sigil.");
         return;
       }
 
-      const codeRef = doc(db, "usedCodes", ONE_TIME_ADMIN_CODE);
+      const codeRef = doc(db, "usedCodes", cleanCode);
       const snap = await getDoc(codeRef);
 
       if (snap.exists()) {
@@ -736,11 +882,14 @@
         usedAt: serverTimestamp()
       });
 
-      currentUser.role = "admin";
-      currentUser.rank = "First Weeper";
-      currentUser.status = "sealed";
-      currentUser.initiateNumber = "000001";
-      currentUser.badges = ["Founder", "Admin", "The First Witness"];
+      currentUser = {
+        ...currentUser,
+        role: "admin",
+        rank: "First Weeper",
+        status: "sealed",
+        initiateNumber: "000001",
+        badges: ["Founder", "Admin", "The First Witness"]
+      };
 
       await setDoc(doc(db, "profiles", currentUser.uid), {
         ...currentUser,
@@ -748,7 +897,31 @@
       }, { merge: true });
 
       alert("The First Weeper’s sigil has been accepted. Admin access granted.");
+
       setupRoom("admin");
+      updateRoomText();
+    });
+
+    clearChatBtn.addEventListener("click", async () => {
+      if (currentUser?.role !== "admin") {
+        alert("Only an admin can clear a room.");
+        return;
+      }
+
+      const confirmed = confirm("Clear all messages in this room?");
+
+      if (!confirmed) return;
+
+      const roomQuery = query(
+        collection(db, "messages"),
+        where("room", "==", currentRoom),
+        limit(100)
+      );
+
+      const snapshot = await getDocs(roomQuery);
+      const deletions = snapshot.docs.map(d => deleteDoc(doc(db, "messages", d.id)));
+
+      await Promise.allSettled(deletions);
     });
 
     function escapeHtml(text) {
@@ -761,4 +934,5 @@
     }
   </script>
 </body>
+</html>
 </html>
