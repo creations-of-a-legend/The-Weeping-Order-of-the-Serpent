@@ -1,22 +1,16 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // TEST RULES: okay for prototype testing, not final public moderation.
-    match /profiles/{userId} {
-      allow read: if true;
-      allow create, update: if request.auth != null && request.auth.uid == userId;
+    match /messages/{message} {
+      allow read, write: if true;
     }
 
-    match /messages/{messageId} {
-      allow read: if true;
-      allow create: if request.auth != null;
-      allow delete: if request.auth != null;
-      allow update: if false;
+    match /profiles/{profile} {
+      allow read, write: if true;
     }
 
-    match /usedCodes/{codeId} {
-      allow read, create: if request.auth != null;
-      allow update, delete: if false;
+    match /usedCodes/{code} {
+      allow read, write: if true;
     }
   }
 }
