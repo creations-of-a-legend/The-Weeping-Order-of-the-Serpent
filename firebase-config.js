@@ -1,21 +1,15 @@
-// firebase-config.js
-// Paste your Firebase web app config here.
-// Firebase Console → Project Settings → Your apps → Web app config.
-
 export const firebaseConfig = {
-  apiKey: "",
-  authDomain: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: ""
+  apiKey: "AIzaSyC7jzp92jTjtGX9Dxp_MMTcaEGHsveufB0",
+  authDomain: "weeping-order.firebaseapp.com",
+  projectId: "weeping-order",
+  storageBucket: "weeping-order.firebasestorage.app",
+  messagingSenderId: "439201717119",
+  appId: "1:439201717119:web:924a56ec0baf738972d84a",
+  measurementId: "G-EQ3CC4EM5C"
 };
 
-// Testing admin code. Change this before sharing publicly.
 export const ONE_TIME_ADMIN_CODE = "FIRST-WEEPER-0001";
 
-// Guest messages expire after 5 minutes.
 export const GUEST_MESSAGE_LIFETIME_MS = 5 * 60 * 1000;
 
-// Guest anti-spam cooldown.
 export const GUEST_COOLDOWN_MS = 4000;
