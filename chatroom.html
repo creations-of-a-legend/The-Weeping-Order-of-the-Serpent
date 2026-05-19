@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Serpent's Coil</title>
-  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="icon" type="image/png" href="favicon.png">
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
@@ -15,20 +15,21 @@
       --gold-bright: #f1c40f;
       --gold-muted: #9b6a1f;
       --bone: #d8d1bf;
+      --panel: #111111;
     }
 
     * {
       box-sizing: border-box;
     }
 
-    body {
+  body {
       margin: 0;
       background: #000;
       color: var(--bone);
       font-family: Inter, sans-serif;
       min-height: 100vh;
       overflow: hidden;
-    }
+}
 
     .font-cinzel {
       font-family: Cinzel, serif;
@@ -36,7 +37,7 @@
 
     .gold-glow {
       color: var(--gold);
-      text-shadow: 0 0 16px rgba(214, 162, 74, 0.5);
+      text-shadow: 0 0 16px rgba(214,162,74,.5);
     }
 
     .app-shell {
@@ -46,30 +47,31 @@
     }
 
     header {
-      border-bottom: 1px solid rgba(155, 106, 31, 0.7);
-      background: rgba(0, 0, 0, 0.9);
+      border-bottom: 1px solid rgba(155,106,31,.7);
+      background: rgba(0,0,0,.88);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       z-index: 20;
     }
 
+    .panel {
+      background: rgba(17,17,17,.9);
+      border: 1px solid rgba(155,106,31,.55);
+      box-shadow: 0 0 24px rgba(214,162,74,.08);
+    }
+
     .chat-area {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 330px;
+      grid-template-columns: minmax(0, 1fr) 320px;
       min-height: 0;
       height: 100%;
     }
 
     .main-chat {
       display: grid;
-      grid-template-rows: auto 1fr auto;
+      grid-template-rows: 1fr auto;
       min-width: 0;
       min-height: 0;
-    }
-
-    .room-bar {
-      border-bottom: 1px solid rgba(155, 106, 31, 0.45);
-      background: rgba(0, 0, 0, 0.35);
     }
 
     .messages {
@@ -79,55 +81,28 @@
       scroll-behavior: smooth;
     }
 
-    .panel {
-      background: rgba(17, 17, 17, 0.92);
-      border: 1px solid rgba(155, 106, 31, 0.55);
-      box-shadow: 0 0 24px rgba(214, 162, 74, 0.08);
-    }
-
     .message {
-      max-width: 820px;
+      max-width: 800px;
       margin-bottom: 1rem;
       padding: 1rem;
       border-radius: 1rem;
-      background: rgba(31, 41, 55, 0.75);
-      border: 1px solid rgba(155, 106, 31, 0.28);
+      background: rgba(31,41,55,.75);
+      border: 1px solid rgba(155,106,31,.28);
       overflow-wrap: anywhere;
-      word-break: break-word;
-      transition: opacity 0.25s ease;
     }
 
     .message.self {
       margin-left: auto;
-      background: rgba(214, 162, 74, 0.18);
-      border-color: rgba(214, 162, 74, 0.55);
-    }
-
-    .message.admin {
-      background: rgba(214, 162, 74, 0.22);
-      border-color: rgba(241, 196, 15, 0.7);
-      box-shadow: 0 0 20px rgba(214, 162, 74, 0.12);
-    }
-
-    .message.fading {
-      opacity: 0.45;
+      background: rgba(214,162,74,.18);
+      border-color: rgba(214,162,74,.55);
     }
 
     .message-meta {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 0.45rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .avatar {
-      width: 34px;
-      height: 34px;
-      object-fit: contain;
-      border-radius: 999px;
-      border: 1px solid rgba(214, 162, 74, 0.45);
-      background: rgba(0, 0, 0, 0.35);
+      gap: .45rem;
+      margin-bottom: .5rem;
     }
 
     .username {
@@ -140,65 +115,61 @@
 
     .username:hover {
       color: #ffd27a;
-      text-shadow: 0 0 12px rgba(214, 162, 74, 0.6);
+      text-shadow: 0 0 12px rgba(214,162,74,.6);
     }
 
     .rank-pill {
       display: inline-block;
-      padding: 0.12rem 0.45rem;
-      border: 1px solid rgba(214, 162, 74, 0.45);
+      padding: .12rem .45rem;
+      border: 1px solid rgba(214,162,74,.45);
       border-radius: 999px;
-      font-size: 0.7rem;
+      font-size: .7rem;
       color: #d6b36a;
-      background: rgba(0, 0, 0, 0.35);
+      background: rgba(0,0,0,.35);
     }
 
-    .rank-guest {
-      color: #9ca3af;
-      border-color: rgba(156, 163, 175, 0.35);
-    }
-
-    .rank-admin {
-      color: #f1c40f;
-      border-color: rgba(241, 196, 15, 0.7);
-    }
+    .rank-guest { color: #9ca3af; border-color: rgba(156,163,175,.35); }
+    .rank-admin { color: #f1c40f; border-color: rgba(241,196,15,.7); }
+    .rank-system { color: #b8a06a; border-color: rgba(155,106,31,.65); }
+    .message.admin { background: rgba(214,162,74,.22); border-color: rgba(241,196,15,.7); box-shadow:0 0 20px rgba(214,162,74,.12); }
+    .message.system { background: rgba(0,0,0,.55); border-color: rgba(155,106,31,.5); color:#b8a06a; }
+    .message.fading { opacity: .45; }
+    .hidden { display: none !important; }
 
     .time {
-      font-size: 0.72rem;
+      font-size: .72rem;
       color: #6b7280;
     }
 
-    .btn,
-    select {
+    .btn {
       border: 1px solid var(--gold-muted);
       color: var(--gold);
-      padding: 0.68rem 0.95rem;
-      border-radius: 0.65rem;
-      background: rgba(0, 0, 0, 0.35);
-      transition: 0.2s ease;
+      padding: .7rem 1rem;
+      border-radius: .65rem;
+      background: rgba(0,0,0,.35);
+      transition: .2s ease;
       font-family: Cinzel, serif;
-      letter-spacing: 0.08em;
+      letter-spacing: .08em;
       text-transform: uppercase;
-      font-size: 0.78rem;
+      font-size: .82rem;
       text-decoration: none;
       white-space: nowrap;
       cursor: pointer;
     }
 
-    .btn:hover,
-    select:hover {
+    .btn:hover {
       color: #ffd27a;
-      box-shadow: 0 0 18px rgba(214, 162, 74, 0.22);
+      box-shadow: 0 0 18px rgba(214,162,74,.22);
     }
 
     .btn-danger {
       color: #fca5a5;
-      border-color: rgba(185, 28, 28, 0.7);
+      border-color: rgba(185, 28, 28, .7);
     }
 
     input {
-      background: rgba(0, 0, 0, 0.45);
-      border: 1px solid rgba(155, 106, 31, 0.7);
+      background: rgba(0,0,0,.45);
+      border: 1px solid rgba(155,106,31,.7);
       color: var(--bone);
       outline: none;
       min-width: 0;
@@ -206,46 +177,46 @@
 
     input:focus {
       border-color: var(--gold);
-      box-shadow: 0 0 12px rgba(214, 162, 74, 0.18);
+      box-shadow: 0 0 12px rgba(214,162,74,.18);
     }
 
     .sidebar {
-      border-left: 1px solid rgba(155, 106, 31, 0.45);
-      background: rgba(0, 0, 0, 0.35);
+      border-left: 1px solid rgba(155,106,31,.45);
+      background: rgba(0,0,0,.35);
       overflow-y: auto;
       min-height: 0;
     }
 
     .member-card {
       display: block;
-      border: 1px solid rgba(155, 106, 31, 0.35);
-      background: rgba(17, 17, 17, 0.82);
-      border-radius: 0.85rem;
-      padding: 0.8rem;
-      margin-bottom: 0.75rem;
+      border: 1px solid rgba(155,106,31,.35);
+      background: rgba(17,17,17,.82);
+      border-radius: .85rem;
+      padding: .8rem;
+      margin-bottom: .75rem;
       text-decoration: none;
       color: var(--bone);
-      transition: 0.2s ease;
+      transition: .2s ease;
     }
 
     .member-card:hover {
       border-color: var(--gold);
-      box-shadow: 0 0 14px rgba(214, 162, 74, 0.15);
+      box-shadow: 0 0 14px rgba(214,162,74,.15);
       transform: translateY(-1px);
     }
 
     .emoji-row {
       display: flex;
-      gap: 0.5rem;
+      gap: .5rem;
       flex-wrap: wrap;
       max-height: 96px;
       overflow-y: auto;
-      padding-right: 0.25rem;
+      padding-right: .25rem;
     }
 
     .emoji-btn {
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(214, 162, 74, 0.35);
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(214,162,74,0.35);
       color: #d6a24a;
       border-radius: 10px;
       padding: 6px 10px;
@@ -257,33 +228,19 @@
 
     .emoji-btn:hover {
       border-color: #d6a24a;
-      box-shadow: 0 0 12px rgba(214, 162, 74, 0.22);
+      box-shadow: 0 0 12px rgba(214,162,74,0.22);
       transform: scale(1.08);
-    }
-
-    .notice {
-      border: 1px solid rgba(155, 106, 31, 0.35);
-      background: rgba(0, 0, 0, 0.38);
-      color: #b8a06a;
-      border-radius: 0.85rem;
-      padding: 0.75rem;
-      font-size: 0.85rem;
-      line-height: 1.45;
     }
 
     .status-line {
       color: #8b6f32;
-      font-size: 0.78rem;
-      letter-spacing: 0.12em;
+      font-size: .78rem;
+      letter-spacing: .12em;
       text-transform: uppercase;
       font-family: Cinzel, serif;
     }
 
-    .hidden {
-      display: none !important;
-    }
-
-    @media (max-width: 980px) {
+    @media (max-width: 900px) {
       body {
         overflow: auto;
       }
@@ -302,9 +259,7 @@
       }
 
       .sidebar {
-        border-left: 0;
-        border-top: 1px solid rgba(155, 106, 31, 0.45);
-        max-height: 340px;
+        display: none;
       }
 
       header {
@@ -315,7 +270,7 @@
         width: 100%;
         justify-content: flex-start;
         overflow-x: auto;
-        padding-bottom: 0.2rem;
+        padding-bottom: .2rem;
       }
     }
 
@@ -325,16 +280,15 @@
       }
 
       .composer {
-        margin: 0.65rem;
-        padding: 0.65rem;
+        margin: .65rem;
+        padding: .65rem;
       }
 
       .composer-form {
         flex-direction: column;
       }
 
-      .btn,
-      select {
+      .btn {
         width: 100%;
         text-align: center;
         justify-content: center;
@@ -365,16 +319,15 @@
 
     <main class="chat-area">
       <section class="main-chat">
-        <div class="room-bar p-3 flex flex-wrap items-center justify-between gap-3">
+        <div class="room-bar p-3 flex flex-wrap items-center justify-between gap-3" style="border-bottom:1px solid rgba(155,106,31,.45);background:rgba(0,0,0,.35);">
           <div class="flex flex-wrap items-center gap-3">
             <span class="status-line">Room</span>
-            <select id="roomSelect">
+            <select id="roomSelect" class="btn">
               <option value="guest">Outer Coil</option>
               <option value="approved">Inner Coil</option>
               <option value="admin">Black Ledger</option>
             </select>
           </div>
-
           <div class="status-line" id="roleStatus">Connecting...</div>
         </div>
 
@@ -382,7 +335,7 @@
 
         <div class="panel composer m-4 p-3 rounded-2xl">
           <div class="flex items-center justify-between gap-3 mb-3">
-            <div class="status-line" id="roomRule">The archive is listening.</div>
+            <div class="status-line">Symbols of the Coil</div>
             <div class="status-line" id="messageCount">0 archived</div>
           </div>
 
@@ -393,6 +346,7 @@
             <button type="button" class="emoji-btn">🜏</button>
             <button type="button" class="emoji-btn">⚚</button>
             <button type="button" class="emoji-btn">☾</button>
+            <button type="button" class="emoji-btn">👁️</button>
             <button type="button" class="emoji-btn">🕯️</button>
             <button type="button" class="emoji-btn">🐍</button>
             <button type="button" class="emoji-btn">🩸</button>
@@ -412,7 +366,6 @@
       </section>
 
       <aside class="sidebar p-4">
-        <div class="notice mb-4" id="roomNotice">Connecting to the archive...</div>
         <h2 class="font-cinzel gold-glow text-xl mb-4 tracking-[.15em] uppercase">Initiates</h2>
         <div id="members"></div>
       </aside>
@@ -430,37 +383,15 @@
       measurementId: "G-EQ3CC4EM5C"
     };
 
-    const ADMIN_CODES = [
-      "FIRST-WEEPER-0001",
-      "FIRST-WEEPER-0002",
-      "SKYHERO-ADMIN-TEST"
-    ];
-
+    const ADMIN_CODES = ["FIRST-WEEPER-0001", "FIRST-WEEPER-0002", "SKYHERO-ADMIN-TEST"];
     const GUEST_MESSAGE_LIFETIME_MS = 5 * 60 * 1000;
     const GUEST_COOLDOWN_MS = 4000;
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
     import {
-      getAuth,
-      signInAnonymously,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-    import {
-      getFirestore,
-      collection,
-      doc,
-      getDoc,
-      setDoc,
-      addDoc,
-      deleteDoc,
-      updateDoc,
-      onSnapshot,
-      query,
-      where,
-      orderBy,
-      serverTimestamp,
-      limit,
-      getDocs
+      getFirestore, collection, doc, getDoc, setDoc, addDoc, deleteDoc,
+      updateDoc, onSnapshot, query, where, orderBy, serverTimestamp, limit, getDocs
     } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
     const messagesEl = document.getElementById("messages");
@@ -471,16 +402,15 @@
     const clearChatBtn = document.getElementById("clearChatBtn");
     const messageCount = document.getElementById("messageCount");
     const roleStatus = document.getElementById("roleStatus");
-    const roomRule = document.getElementById("roomRule");
-    const roomNotice = document.getElementById("roomNotice");
+    const roomNotice = document.getElementById("members").parentElement;
     const roomSubtitle = document.getElementById("roomSubtitle");
     const identityBtn = document.getElementById("identityBtn");
     const codeBtn = document.getElementById("codeBtn");
     const roomSelect = document.getElementById("roomSelect");
 
-    let app;
-    let auth;
-    let db;
+    let app = initializeApp(firebaseConfig);
+    let auth = getAuth(app);
+    let db = getFirestore(app);
     let currentUser = null;
     let currentRoom = localStorage.getItem("coil_current_room") || "guest";
     let latestMessages = [];
@@ -488,16 +418,12 @@
     let unsubscribeMembers = null;
     let lastGuestSend = Number(localStorage.getItem("coil_last_guest_send") || "0");
 
-    app = initializeApp(firebaseConfig);
-    auth = getAuth(app);
-    db = getFirestore(app);
-
     onAuthStateChanged(auth, async (user) => {
       if (!user) return;
-
       currentUser = await loadOrCreateProfile(user.uid);
       await touchProfile();
       enableChat();
+      await seedBotMessagesIfEmpty();
       setupRoom(currentRoom);
       listenMembers();
     });
@@ -509,10 +435,10 @@
     function fail(text) {
       roomSubtitle.textContent = "Connection failed";
       roleStatus.textContent = "Offline";
-      roomNotice.textContent = text;
       messageInput.disabled = true;
       sendBtn.disabled = true;
       console.error(text);
+      alert(text);
     }
 
     function enableChat() {
@@ -523,37 +449,20 @@
     async function loadOrCreateProfile(uid) {
       const ref = doc(db, "profiles", uid);
       const snap = await getDoc(ref);
-
-      if (snap.exists()) {
-        return {
-          uid,
-          ...snap.data()
-        };
-      }
+      if (snap.exists()) return { uid, ...snap.data() };
 
       const username = localStorage.getItem("coil_username") || "Guest Witness";
-
       const profile = {
-        uid,
-        username,
-        rank: "Guest",
-        role: "guest",
-        initiateNumber: "------",
-        status: "transient",
-        bio: "A temporary voice in the Outer Coil.",
-        badges: ["Transient Witness"],
-        createdAt: serverTimestamp(),
-        lastSeen: serverTimestamp()
+        uid, username, rank: "Guest", role: "guest", initiateNumber: "------",
+        status: "transient", bio: "A temporary voice in the Outer Coil.",
+        badges: ["Transient Witness"], createdAt: serverTimestamp(), lastSeen: serverTimestamp()
       };
-
       await setDoc(ref, profile, { merge: true });
-
       return profile;
     }
 
     async function touchProfile() {
       if (!currentUser) return;
-
       await setDoc(doc(db, "profiles", currentUser.uid), {
         username: currentUser.username || "Guest Witness",
         rank: currentUser.rank || "Guest",
@@ -566,110 +475,78 @@
       }, { merge: true });
     }
 
+    async function seedBotMessagesIfEmpty() {
+      const q = query(collection(db, "messages"), where("room", "==", "guest"), limit(5));
+      const snapshot = await getDocs(q);
+      if (!snapshot.empty) return;
+
+      await addDoc(collection(db, "messages"), {
+        room: "guest", uid: "system-archive", username: "Archive", rank: "System", role: "system",
+        text: "The Coil is open. The first whispers have been archived.",
+        createdAt: serverTimestamp(), expiresAt: null, seeded: true
+      });
+
+      await addDoc(collection(db, "messages"), {
+        room: "guest", uid: "veiled-witness-003", username: "Veiled Witness", rank: "Veiled Witness", role: "approved",
+        text: "File WS-014 remains sealed.",
+        createdAt: serverTimestamp(), expiresAt: null, seeded: true
+      });
+    }
+
     function canEnterRoom(room) {
       const role = currentUser?.role || "guest";
-
       if (room === "guest") return true;
       if (room === "approved") return role === "approved" || role === "admin";
       if (room === "admin") return role === "admin";
-
       return false;
     }
 
     function setupRoom(room) {
       if (!currentUser) return;
-
       if (!canEnterRoom(room)) {
         alert("The Coil does not recognize your rank for this room.");
         room = "guest";
       }
-
       currentRoom = room;
       localStorage.setItem("coil_current_room", currentRoom);
       roomSelect.value = currentRoom;
-
       updateRoomText();
 
       if (unsubscribeMessages) unsubscribeMessages();
-
-      const q = query(
-        collection(db, "messages"),
-        where("room", "==", currentRoom),
-        orderBy("createdAt", "asc"),
-        limit(100)
-      );
-
+      const q = query(collection(db, "messages"), where("room", "==", currentRoom), orderBy("createdAt", "asc"), limit(100));
       unsubscribeMessages = onSnapshot(q, async (snapshot) => {
-        latestMessages = snapshot.docs.map(d => ({
-          id: d.id,
-          ...d.data()
-        }));
-
+        latestMessages = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
         await cleanupExpiredMessages();
         renderMessages();
-      }, (error) => {
-        fail("Message listener failed: " + error.message);
-      });
+      }, (error) => fail("Message listener failed: " + error.message));
     }
 
     function updateRoomText() {
       const role = currentUser?.role || "guest";
-
       clearChatBtn.classList.toggle("hidden", role !== "admin");
-
-      if (currentRoom === "guest") {
-        roomSubtitle.textContent = "Outer Coil · Transient Whispers";
-        roomRule.textContent = "Guest messages fade after five minutes.";
-        roomNotice.innerHTML = "<strong>Outer Coil:</strong> Everyone may enter. Guest messages vanish after five minutes. No file uploads.";
-      } else if (currentRoom === "approved") {
-        roomSubtitle.textContent = "Inner Coil · Archived Voices";
-        roomRule.textContent = "Approved voices are archived.";
-        roomNotice.innerHTML = "<strong>Inner Coil:</strong> Approved members and admins may enter. Messages remain archived.";
-      } else {
-        roomSubtitle.textContent = "Black Ledger · Sealed Authority";
-        roomRule.textContent = "Admin records remain unless erased.";
-        roomNotice.innerHTML = "<strong>Black Ledger:</strong> Admin-only room. Records remain unless erased.";
-      }
-
+      if (currentRoom === "guest") roomSubtitle.textContent = "Outer Coil · Transient Whispers";
+      else if (currentRoom === "approved") roomSubtitle.textContent = "Inner Coil · Archived Voices";
+      else roomSubtitle.textContent = "Black Ledger · Sealed Authority";
       roleStatus.textContent = "Role: " + role;
     }
 
     async function cleanupExpiredMessages() {
       const now = Date.now();
-
-      const deletions = latestMessages
-        .filter(msg => msg.expiresAt && msg.expiresAt <= now)
+      const deletions = latestMessages.filter(msg => msg.expiresAt && msg.expiresAt <= now)
         .map(msg => deleteDoc(doc(db, "messages", msg.id)));
-
-      if (deletions.length) {
-        await Promise.allSettled(deletions);
-      }
+      if (deletions.length) await Promise.allSettled(deletions);
     }
 
     function listenMembers() {
       if (unsubscribeMembers) unsubscribeMembers();
-
-      const q = query(
-        collection(db, "profiles"),
-        orderBy("lastSeen", "desc"),
-        limit(50)
-      );
-
+      const q = query(collection(db, "profiles"), orderBy("lastSeen", "desc"), limit(50));
       unsubscribeMembers = onSnapshot(q, (snapshot) => {
         membersEl.innerHTML = "";
-
         snapshot.docs.forEach(d => {
-          const member = {
-            uid: d.id,
-            ...d.data()
-          };
-
+          const member = { uid: d.id, ...d.data() };
           const card = document.createElement("a");
           card.className = "member-card";
-          card.href = member.uid === currentUser.uid
-            ? "./profile.html?uid=me"
-            : "./profile.html?uid=" + encodeURIComponent(member.uid);
-
+          card.href = member.uid === currentUser.uid ? "./profile.html?uid=me" : "./profile.html?uid=" + encodeURIComponent(member.uid);
           card.innerHTML = `
             <div class="flex items-center gap-3">
               <img src="favicon.png" class="avatar" alt="">
@@ -678,9 +555,7 @@
                 <div class="text-xs text-gray-400 mt-1">${escapeHtml(member.rank || "Guest")} · ${escapeHtml(member.role || "guest")}</div>
               </div>
             </div>
-            <div class="text-xs text-gray-500 mt-2">${escapeHtml(member.bio || "No record available.")}</div>
-          `;
-
+            <div class="text-xs text-gray-500 mt-2">${escapeHtml(member.bio || "No record available.")}</div>`;
           membersEl.appendChild(card);
         });
       });
@@ -688,67 +563,36 @@
 
     function renderMessages() {
       const now = Date.now();
-
-      const visibleMessages = latestMessages.filter(msg => {
-        return !msg.expiresAt || msg.expiresAt > now;
-      });
-
-      messagesEl.innerHTML = `
-        <div class="text-center text-sm text-yellow-700/80 my-4 font-cinzel tracking-[.18em] uppercase">
-          The archive is listening.
-        </div>
-      `;
+      const visibleMessages = latestMessages.filter(msg => !msg.expiresAt || msg.expiresAt > now);
+      messagesEl.innerHTML = `<div class="text-center text-sm text-yellow-700/80 my-4 font-cinzel tracking-[.18em] uppercase">The archive is listening.</div>`;
 
       visibleMessages.forEach(msg => {
         const isSelf = currentUser && msg.uid === currentUser.uid;
         const isAdmin = msg.role === "admin";
+        const isSystem = msg.role === "system";
         const fading = msg.expiresAt && msg.expiresAt - now < 60000;
-
         const div = document.createElement("div");
-        div.className =
-          "message " +
-          (isSelf ? "self " : "") +
-          (isAdmin ? "admin " : "") +
-          (fading ? "fading" : "");
-
-        const expiresText = msg.expiresAt
-          ? " · fades in " + Math.max(0, Math.ceil((msg.expiresAt - now) / 1000)) + "s"
-          : "";
-
-        const rankClass =
-          msg.role === "admin"
-            ? "rank-pill rank-admin"
-            : msg.role === "guest"
-              ? "rank-pill rank-guest"
-              : "rank-pill";
-
+        div.className = "message " + (isSelf ? "self " : "") + (isAdmin ? "admin " : "") + (isSystem ? "system " : "") + (fading ? "fading" : "");
+        const expiresText = msg.expiresAt ? " · fades in " + Math.max(0, Math.ceil((msg.expiresAt - now) / 1000)) + "s" : "";
+        const rankClass = msg.role === "admin" ? "rank-pill rank-admin" : msg.role === "system" ? "rank-pill rank-system" : msg.role === "guest" ? "rank-pill rank-guest" : "rank-pill";
+        const profileHref = isSelf ? "./profile.html?uid=me" : "./profile.html?uid=" + encodeURIComponent(msg.uid);
         div.innerHTML = `
           <div class="message-meta">
             <img src="favicon.png" class="avatar" alt="">
-            <a class="username" href="${isSelf ? "./profile.html?uid=me" : "./profile.html?uid=" + encodeURIComponent(msg.uid)}">
-              ${escapeHtml(msg.username)}
-            </a>
+            <a class="username" href="${profileHref}">${escapeHtml(msg.username)}</a>
             <span class="${rankClass}">${escapeHtml(msg.rank || "Guest")}</span>
             <span class="time">${formatDate(msg.createdAt)}${expiresText}</span>
-            ${
-              isSelf || currentUser?.role === "admin"
-                ? `<button class="btn btn-danger" data-delete="${escapeHtml(msg.id)}" type="button">Delete</button>`
-                : ""
-            }
+            ${(isSelf || currentUser?.role === "admin") && !isSystem ? `<button class="btn btn-danger" data-delete="${escapeHtml(msg.id)}" type="button">Delete</button>` : ""}
           </div>
-          <div class="leading-relaxed">${escapeHtml(msg.text)}</div>
-        `;
-
+          <div class="leading-relaxed">${escapeHtml(msg.text)}</div>`;
         messagesEl.appendChild(div);
       });
 
       document.querySelectorAll("[data-delete]").forEach(button => {
         button.addEventListener("click", async () => {
-          const id = button.getAttribute("data-delete");
-          await deleteDoc(doc(db, "messages", id));
+          await deleteDoc(doc(db, "messages", button.getAttribute("data-delete")));
         });
       });
-
       messageCount.textContent = visibleMessages.length + " archived";
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
@@ -756,171 +600,82 @@
     function formatDate(timestamp) {
       try {
         const date = timestamp?.toDate ? timestamp.toDate() : new Date(timestamp || Date.now());
-        return date.toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit"
-        });
-      } catch {
-        return "";
-      }
+        return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      } catch { return ""; }
     }
 
     function insertAtCursor(input, text) {
       const start = input.selectionStart ?? input.value.length;
       const end = input.selectionEnd ?? input.value.length;
-      const before = input.value.slice(0, start);
-      const after = input.value.slice(end);
-
-      input.value = before + text + after;
-
+      input.value = input.value.slice(0, start) + text + input.value.slice(end);
       const newPosition = start + text.length;
       input.setSelectionRange(newPosition, newPosition);
       input.focus();
     }
 
-    document.querySelectorAll(".emoji-btn").forEach(button => {
-      button.addEventListener("click", () => {
-        insertAtCursor(messageInput, button.textContent);
-      });
-    });
+    document.querySelectorAll(".emoji-btn").forEach(button => button.addEventListener("click", () => insertAtCursor(messageInput, button.textContent)));
 
     messageForm.addEventListener("submit", async (event) => {
       event.preventDefault();
-
       const text = messageInput.value.trim();
-
       if (!text || !currentUser) return;
-
-      if (!canEnterRoom(currentRoom)) {
-        alert("The Coil does not recognize your rank for this room.");
-        setupRoom("guest");
-        return;
-      }
+      if (!canEnterRoom(currentRoom)) { setupRoom("guest"); return; }
 
       if (currentUser.role === "guest") {
         const now = Date.now();
-
         if (now - lastGuestSend < GUEST_COOLDOWN_MS) {
           alert("The Coil rejects rapid whispers. Wait a moment.");
           return;
         }
-
         lastGuestSend = now;
         localStorage.setItem("coil_last_guest_send", String(lastGuestSend));
       }
 
-      const expiresAt =
-        currentRoom === "guest" || currentUser.role === "guest"
-          ? Date.now() + GUEST_MESSAGE_LIFETIME_MS
-          : null;
-
+      const expiresAt = currentRoom === "guest" || currentUser.role === "guest" ? Date.now() + GUEST_MESSAGE_LIFETIME_MS : null;
       await addDoc(collection(db, "messages"), {
-        room: currentRoom,
-        uid: currentUser.uid,
-        username: currentUser.username || "Guest Witness",
-        rank: currentUser.rank || "Guest",
-        role: currentUser.role || "guest",
-        text,
-        createdAt: serverTimestamp(),
-        expiresAt
+        room: currentRoom, uid: currentUser.uid, username: currentUser.username || "Guest Witness",
+        rank: currentUser.rank || "Guest", role: currentUser.role || "guest", text,
+        createdAt: serverTimestamp(), expiresAt
       });
-
       messageInput.value = "";
     });
 
-    roomSelect.addEventListener("change", () => {
-      setupRoom(roomSelect.value);
-    });
+    roomSelect.addEventListener("change", () => setupRoom(roomSelect.value));
 
     identityBtn.addEventListener("click", async () => {
       if (!currentUser) return;
-
       const name = prompt("Choose your display name:", currentUser.username || "Guest Witness");
-
       if (!name) return;
-
       const cleanName = name.trim().slice(0, 32);
-
-      if (cleanName.length < 2) {
-        alert("Name must be at least 2 characters.");
-        return;
-      }
-
+      if (cleanName.length < 2) { alert("Name must be at least 2 characters."); return; }
       currentUser.username = cleanName;
       localStorage.setItem("coil_username", cleanName);
-
-      await updateDoc(doc(db, "profiles", currentUser.uid), {
-        username: cleanName,
-        lastSeen: serverTimestamp()
-      });
+      await updateDoc(doc(db, "profiles", currentUser.uid), { username: cleanName, lastSeen: serverTimestamp() });
     });
 
     codeBtn.addEventListener("click", async () => {
       if (!currentUser) return;
-
       const code = prompt("Enter access code:");
-
       if (!code) return;
-
       const cleanCode = code.trim();
-
-      if (!ADMIN_CODES.includes(cleanCode)) {
-        alert("The Coil does not recognize this sigil.");
-        return;
-      }
-
+      if (!ADMIN_CODES.includes(cleanCode)) { alert("The Coil does not recognize this sigil."); return; }
       const codeRef = doc(db, "usedCodes", cleanCode);
       const snap = await getDoc(codeRef);
-
-      if (snap.exists()) {
-        alert("This sigil has already been consumed.");
-        return;
-      }
-
-      await setDoc(codeRef, {
-        usedBy: currentUser.uid,
-        usedAt: serverTimestamp()
-      });
-
-      currentUser = {
-        ...currentUser,
-        role: "admin",
-        rank: "First Weeper",
-        status: "sealed",
-        initiateNumber: "000001",
-        badges: ["Founder", "Admin", "The First Witness"]
-      };
-
-      await setDoc(doc(db, "profiles", currentUser.uid), {
-        ...currentUser,
-        lastSeen: serverTimestamp()
-      }, { merge: true });
-
+      if (snap.exists()) { alert("This sigil has already been consumed."); return; }
+      await setDoc(codeRef, { usedBy: currentUser.uid, usedAt: serverTimestamp() });
+      currentUser = { ...currentUser, role: "admin", rank: "First Weeper", status: "sealed", initiateNumber: "000001", badges: ["Founder", "Admin", "The First Witness"] };
+      await setDoc(doc(db, "profiles", currentUser.uid), { ...currentUser, lastSeen: serverTimestamp() }, { merge: true });
       alert("The First Weeper’s sigil has been accepted. Admin access granted.");
-
       setupRoom("admin");
       updateRoomText();
     });
 
     clearChatBtn.addEventListener("click", async () => {
-      if (currentUser?.role !== "admin") {
-        alert("Only an admin can clear a room.");
-        return;
-      }
-
-      const confirmed = confirm("Clear all messages in this room?");
-
-      if (!confirmed) return;
-
-      const roomQuery = query(
-        collection(db, "messages"),
-        where("room", "==", currentRoom),
-        limit(100)
-      );
-
+      if (currentUser?.role !== "admin") { alert("Only an admin can clear a room."); return; }
+      if (!confirm("Clear all non-system messages in this room?")) return;
+      const roomQuery = query(collection(db, "messages"), where("room", "==", currentRoom), limit(100));
       const snapshot = await getDocs(roomQuery);
-      const deletions = snapshot.docs.map(d => deleteDoc(doc(db, "messages", d.id)));
-
+      const deletions = snapshot.docs.filter(d => d.data().role !== "system").map(d => deleteDoc(doc(db, "messages", d.id)));
       await Promise.allSettled(deletions);
     });
 
@@ -934,5 +689,4 @@
     }
   </script>
 </body>
-</html>
 </html>
