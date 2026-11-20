@@ -627,8 +627,8 @@
                 });
             }
 
-            let sorrowCount = parseInt(localStorage.getItem('sorrowCount')) || 0;
-            sorrowCounterSpan.textContent = sorrowCount;
+            const MEMBER_COUNT = 38; // change this to whatever you like
+sorrowCounterSpan.textContent = MEMBER_COUNT;
 
             joinForm.addEventListener('submit', function(event) {
                 event.preventDefault();
