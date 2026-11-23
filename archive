@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Archive</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;600;700&display=swap');
+
+    :root {
+      --gold: #d6a24a;
+      --gold-muted: #9b6a1f;
+      --bone: #d8d1bf;
+      --blood: #8b2a1a;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #000;
+      color: var(--bone);
+      font-family: Inter, sans-serif;
+      padding: 2rem 1rem 4rem;
+    }
+
+    .wrap {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    h1, h2 {
+      font-family: Cinzel, serif;
+      color: var(--gold);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      text-align: center;
+      text-shadow: 0 0 16px rgba(214, 162, 74, .5);
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin: 1rem 0 .5rem;
+    }
+
+    h2 {
+      font-size: 1.3rem;
+      margin: 2.5rem 0 .5rem;
+    }
+
+    h3 {
+      font-family: Cinzel, serif;
+      color: var(--gold);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-size: 1.05rem;
+      margin: 2.5rem 0 .4rem;
+      border-bottom: 1px solid rgba(155, 106, 31, .4);
+      padding-bottom: .5rem;
+    }
+
+    p {
+      line-height: 1.6;
+      color: #b8a98a;
+    }
+
+    .note, .arch-note {
+      color: #8a7648;
+      font-style: italic;
+      font-size: .85rem;
+      margin: 0 0 1rem;
+    }
+
+    .note-center {
+      text-align: center;
+    }
+
+    .back {
+      display: block;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--gold-muted);
+      font-family: Cinzel, serif;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-size: .75rem;
+      text-decoration: none;
+      transition: .2s ease;
+    }
+
+    .back:hover {
+      color: var(--gold);
+    }
+
+    ul, .arch-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .item, .arch-item {
+      padding: 14px 10px;
+      border-bottom: 1px solid rgba(155, 106, 31, .2);
+      cursor: pointer;
+      font-family: monospace;
+      font-size: .88rem;
+      color: #b8a98a;
+      transition: .2s;
+    }
+
+    .item:hover, .arch-item:hover {
+      background: rgba(214, 162, 74, .05);
+      color: #fff;
+    }
+
+    .item .id, .arch-item > span:first-child {
+      color: var(--gold-muted);
+      margin-right: 8px;
+    }
+
+    .item em, .arch-item em {
+      float: right;
+      color: #8a5a3a;
+      font-style: normal;
+      font-size: .78rem;
+    }
+
+    .item small, .arch-item small {
+      display: block;
+      clear: both;
+      margin-top: 8px;
+      font-family: Georgia, serif;
+      font-style: italic;
+      color: #8d826c;
+      font-size: .85rem;
+      line-height: 1.55;
+    }
+
+    .ink {
+      color: var(--blood);
+      font-weight: normal;
+      text-shadow: 0 0 6px rgba(139, 42, 26, .5);
+    }
+
+    .redact {
+      background: #000;
+      color: #000;
+      padding: 0 4px;
+      border: 1px solid #1a1a1a;
+      user-select: none;
+    }
+
+    .redact:hover {
+      animation: tw .25s steps(2) 1;
+    }
+
+    @keyframes tw {
+      50% {
+        transform: translateX(1px);
+        background: #1c1006;
+      }
+    }
+
+    .log {
+      margin: 0 0 24px;
+      padding: 16px;
+      border: 1px solid rgba(155, 106, 31, .25);
+      background: #0a0805;
+      font-family: monospace;
+      font-size: .84rem;
+      color: #a89b82;
+      line-height: 1.55;
+    }
+
+    .log p {
+      margin: 8px 0;
+      color: inherit;
+    }
+
+    .log b {
+      color: #cdbf9f;
+    }
+
+    .log-head {
+      color: var(--gold-muted) !important;
+      letter-spacing: 1px;
+      border-bottom: 1px solid rgba(155, 106, 31, .25);
+      padding-bottom: 8px;
+    }
+
+    .log-note {
+      color: #6e6450 !important;
+      font-style: italic;
+      border-left: 2px solid rgba(155, 106, 31, .4);
+      padding-left: 10px;
+    }
+
+    .log-final {
+      color: #9a8660 !important;
+    }
+
+    .fiction, .fiction-note {
+      text-align: center;
+      color: #4a4130;
+      font-size: .72rem;
+      margin-top: 3rem;
+    }
+
+    .overlay, .lock-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 99;
+    }
+
+    .overlay[hidden], .lock-overlay[hidden] {
+      display: none;
+    }
+
+    .popup, .lock-box {
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      padding: 2rem 1.5rem;
+      background: rgba(17, 17, 17, .97);
+      border: 1px solid rgba(155, 106, 31, .7);
+      border-radius: 1rem;
+      box-shadow: 0 0 40px rgba(214, 162, 74, .15);
+    }
+
+    .popup p, .lock-box p {
+      color: #b8a06a;
+      line-height: 1.6;
+      margin: 0 0 1.5rem;
+    }
+
+    .btn, #lock-close {
+      display: inline-block;
+      border: 1px solid var(--gold-muted);
+      color: var(--gold);
+      padding: .7rem 1.4rem;
+      border-radius: .65rem;
+      background: rgba(0, 0, 0, .35);
+      font-family: Cinzel, serif;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-size: .82rem;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .btn:hover, #lock-close:hover {
+      color: #ffd27a;
+      box-shadow: 0 0 18px rgba(214, 162, 74, .22);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="./chatroom.html">← Return</a>
+    <h1>The Archive</h1>
+    <p class="note note-center">Preview of our notes — verify to have full access to our work and plans.</p>
+
+    <h3>The Doctrine of the Open Face</h3>
+    <p>The Order does not wear its mask in public. It wears yours. A Weeper is the neighbor who brings soup, the colleague who covers your shift, the stranger who holds the door. When questioned, we do not resist. We do not hide. We grieve with you, and we mean it so well that you forget to ask what we are grieving for.</p>
+    <p class="ink">A tear that cannot be proven false is as good as a true one.</p>
+
+    <h3>Interview Records</h3>
+    <p class="arch-note">We do not hide. We are simply not noticed.</p>
+    <ul class="arch-list">
+      <li class="arch-item"><span>FILE 0702</span> Subject [[██████]], Accountant <em>[RELEASED]</em>
+        <small>Held 31 hours. Interviewers reported no inconsistencies in his account, his tone, or his posture. He asked twice whether the officers had eaten. Detective's note: <b class="ink">"He comforted me when I raised my voice. I have not been able to forget that."</b></small>
+      </li>
+
+      <li class="arch-item"><span>FILE 0718</span> Subject [[██████]], Schoolteacher <em>[NO CHARGES]</em>
+        <small>Wept convincingly through three sessions and named a grief counselor. Neighbors described her as "the kindest person on the street." The counselor, [[Dr. ██████]], later could not recall ever meeting her. Interview tapes were found blank on playback.</small>
+      </li>
+
+      <li class="arch-item"><span>FILE 0733</span> Subject [[██████]], Courier <em>[INCOMPLETE]</em>
+        <small>Roughly questioned over two days. Never raised his voice, never asked for counsel. Repeated one sentence when asked about the doorframe: <b class="ink">"I'm sorry you're going through this."</b> Examining officer requested transfer the same week.</small>
+      </li>
+
+      <li class="arch-item"><span>FILE 0749</span> The Dinner Party <em>[UNRESOLVED]</em>
+        <small>Nine guests, one missing host. All nine gave matching, relaxed accounts, down to the dessert. Not one contradicted another. A responding officer wrote: <b class="ink">"They looked like people who had practiced being surprised."</b></small>
+      </li>
+    </ul>
+
+    <section id="archive">
+      <h2>The Archive</h2>
+      <p class="arch-note">Preview of our notes — verify to have full access to our work and plans.</p>
+
+      <h3>Unresolved Cases</h3>
+      <ul class="arch-list">
+        <li class="arch-item"><span>FILE 0091</span> The Empty Ward <em>[UNSOLVED]</em>
+          <small>Eleven patients vanished from a locked wing between the 2 a.m. and 4 a.m. rounds. Every door was bolted from the inside. The night nurse was found sitting calmly in a corridor, humming, with a tear drawn on her cheek in what the lab called "an unidentified pigment." She has not spoken since.</small>
+        </li>
+
+        <li class="arch-item"><span>FILE 0203</span> The Ledger Fire <em>[UNSOLVED]</em>
+          <small>An archive in <span class="redact">Marrow Street</span> burned to its foundation. One page survived, soaked in black ink, unreadable except for a few lines:<br>
+          <b class="ink">"...he counted the stairs the night before..."</b><br>
+          <b class="ink">"...we were kind to her. that is what she could not forgive..."</b></small>
+        </li>
+
+        <li class="arch-item"><span>FILE 0412</span> The Unregistered Weapon <em>[CLOSED / NO FINDINGS]</em>
+          <small>Handgun recovered at scene. No serial number, no tool marks, no known manufacturer. Ballistics matched nothing on record. Case closed after the evidence locker was found empty and sealed from the outside.</small>
+        </li>
+
+        <li class="arch-item"><span>FILE 0438</span> Residence, Second Floor <em>[CAUSE UNDETERMINED]</em>
+          <small>Occupant reduced to ash. Furniture, curtains and bedding untouched. No accelerant found. A gold-colored band was on the doorframe, installed from the inside. Officer's note: <b class="ink">"The room was still warm. The window had been open for [[six days]]."</b></small>
+        </li>
+      </ul>
+
+      <h3>Suppressed Files</h3>
+      <p class="arch-note">Some records were never meant to reach you. We kept copies.</p>
+      <ul class="arch-list">
+        <li class="arch-item"><span>FILE 0519</span> The Harbor Incident <em>[SUPPRESSED]</em>
+          <small>Official report: "equipment failure." Fourteen dock workers were relocated within a week and told not to discuss what they saw on the water. Two refused. Neither appears in later records.</small>
+        </li>
+
+        <li class="arch-item"><span>FILE 0561</span> Detective <span class="redact">████████</span> <em>[REASSIGNED]</em>
+          <small>Lead on three connected cases. Transferred after submitting a photograph of a doorframe, which was never logged. Sent one postcard before going silent:<br><b class="ink">"They are polite. That is the worst part."</b></small>
+        </li>
+
+        <li class="arch-item"><span>FILE 0602</span> The Quiet Order <em>[INTERNAL ONLY]</em>
+          <small>Memo to a small group of <span class="redact">Regional Office</span> staff:<br><b class="ink">"Do not confirm, do not deny, do not investigate. Their patience is longer than ours."</b><br>Last accessed: 11 years ago. By whom: [[██████]].</small>
+        </li>
+
+        <li class="arch-item"><span>FILE 0617</span> Incident at <span class="redact">Harrow Lane</span> <em>[SUPPRESSED]</em>
+          <small>One survivor found in the east wing. Asked a single question: <b class="ink">"Did they take the mask off yet?"</b> Interview ended by order of <span class="redact">Office of Regional Affairs</span>. Building demolished the following spring.</small>
+        </li>
+      </ul>
+
+      <h3>Transcript, Excerpt</h3>
+      <p class="note">Leaked from [[District Office ██]]. Authenticity unconfirmed.</p>
+
+      <div class="log">
+        <p class="log-head">FILE 0718 / SUBJECT [[██████]] / SESSION 1 OF 3 / 10:00</p>
+        <p><b>DET. [[██████]]:</b> Tell me about the last time you were at the school after hours.</p>
+        <p><b>SUBJECT:</b> <i>(quietly)</i> It was a Thursday. I stayed late to grade papers. I'm sorry, I'm just... I keep thinking about those children.</p>
+        <p><b>DET.:</b> Which children?</p>
+        <p><b>SUBJECT:</b> All of them. Every one of them.</p>
+        <p class="log-note">[10:24] Subject began to cry. No sound at first, then a small break in the voice. Tears continued for eleven minutes. Interviewer offered tissues. Subject thanked him and apologized for "making this harder."</p>
+        <p><b>DET.:</b> You're crying very easily.</p>
+        <p><b>SUBJECT:</b> I've had a lot to carry this year. I'm sorry. I know how it must look.</p>
+        <p class="log-note">[10:51] Det. [[██████]] raised his voice and accused the subject of acting. Subject covered her mouth, nodded, and said, "I understand why you'd think that."</p>
+      </div>
+
+      <div class="log">
+        <p class="log-head">SESSION 2 OF 3 / 15:30 / SAME DAY</p>
+        <p><b>DET. [[██████]]:</b> <i>(shouting)</i> Stop it! Stop crying! Answer the question!</p>
+        <p><b>SUBJECT:</b> I'm trying. I want to help you. I really do.</p>
+        <p class="log-note">[15:44] Interviewer stood and moved to within arm's reach. Subject lowered her gaze, her shoulders shook, and she whispered, "Please don't be angry with me." Observing officer behind the glass wrote: <b class="ink">"I felt like I was the one who had done something wrong."</b></p>
+        <p class="log-note">[16:10] Subject asked if the interviewer's family was well. Interviewer ended the session.</p>
+      </div>
+
+      <div class="log">
+        <p class="log-head">SESSION 3 OF 3 / DAY 2 / 09:00 / NEW INTERVIEWER</p>
+        <p><b>DET. [[██████]]:</b> Your counselor is Dr. [[██████]], correct?</p>
+        <p><b>SUBJECT:</b> Yes. She's been wonderful. I couldn't have gotten through this without her.</p>
+        <p class="log-note">[09:40] Dr. [[██████]] was contacted by phone. She stated she had never treated the subject, nor met her. Her appointment records contained no such entry.</p>
+        <p class="log-note">[09:55] Interviewer confronted the subject with the discrepancy. Subject paused for two seconds, then smiled warmly and said: <b class="ink">"Perhaps I misremembered her name. Grief does that."</b></p>
+        <p class="log-note">[10:30] Session ended. Audio of all three sessions was later found blank on playback. Written notes were consistent across all examiners.</p>
+        <p class="log-note log-final">Closing note from the final interviewer: "Five hours total. She cried on cue, stopped on cue, and never once forgot to look sad. When I told her she could go, she thanked me and squeezed my hand. I don't know if she was lying. I don't know if I would be able to tell."</p>
+      </div>
+
+      <p class="fiction-note">A work of fiction. Any resemblance to real persons or events is coincidental.</p>
+    </section>
+  </div>
+
+  <div id="lock" class="lock-overlay" hidden role="dialog" aria-modal="true">
+    <div class="lock-box">
+      <p>This is a preview of our notes. Verify to have full access to our work and plans.</p>
+      <button id="lock-close">Return</button>
+    </div>
+  </div>
+
+  <script>
+    const redactText = el => {
+      el.innerHTML = el.innerHTML.replace(/\[\[(.+?)\]\]/g, '<span class="redact">$1</span>');
+    };
+
+    const lock = document.getElementById('lock');
+
+    document.querySelectorAll('.item, .arch-item').forEach(el => {
+      redactText(el);
+      el.addEventListener('click', () => { lock.hidden = false; });
+    });
+
+    document.querySelectorAll('.log, .note-center').forEach(redactText);
+
+    document.getElementById('lock-close').addEventListener('click', () => { lock.hidden = true; });
+    lock.addEventListener('click', e => { if (e.target === lock) lock.hidden = true; });
+  </script>
+</body>
+</html>
