@@ -15,7 +15,9 @@
       --bone: #d8d1bf;
     }
 
-    * { box-sizing: border-box; }
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -32,7 +34,7 @@
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,.88);
+      background: rgba(0, 0, 0, .88);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -44,10 +46,10 @@
       width: 100%;
       text-align: center;
       padding: 2rem 1.5rem;
-      background: rgba(17,17,17,.95);
-      border: 1px solid rgba(155,106,31,.7);
+      background: rgba(17, 17, 17, .95);
+      border: 1px solid rgba(155, 106, 31, .7);
       border-radius: 1rem;
-      box-shadow: 0 0 40px rgba(214,162,74,.15);
+      box-shadow: 0 0 40px rgba(214, 162, 74, .15);
     }
 
     .popup img {
@@ -55,8 +57,8 @@
       height: 72px;
       object-fit: contain;
       border-radius: 50%;
-      border: 1px solid rgba(155,106,31,.6);
-      box-shadow: 0 0 16px rgba(214,162,74,.22);
+      border: 1px solid rgba(155, 106, 31, .6);
+      box-shadow: 0 0 16px rgba(214, 162, 74, .22);
       margin-bottom: 1rem;
     }
 
@@ -66,7 +68,7 @@
       letter-spacing: .14em;
       text-transform: uppercase;
       color: var(--gold);
-      text-shadow: 0 0 16px rgba(214,162,74,.5);
+      text-shadow: 0 0 16px rgba(214, 162, 74, .5);
       margin: 0 0 .75rem;
     }
 
@@ -82,7 +84,7 @@
       color: var(--gold);
       padding: .7rem 1.4rem;
       border-radius: .65rem;
-      background: rgba(0,0,0,.35);
+      background: rgba(0, 0, 0, .35);
       font-family: Cinzel, serif;
       letter-spacing: .08em;
       text-transform: uppercase;
@@ -93,11 +95,14 @@
 
     .btn:hover {
       color: #ffd27a;
-      box-shadow: 0 0 18px rgba(214,162,74,.22);
+      box-shadow: 0 0 18px rgba(214, 162, 74, .22);
+    }
+
+    .gate {
+      margin-top: .75rem;
     }
   </style>
 </head>
-
 <body>
   <div class="overlay" role="dialog" aria-modal="true" aria-labelledby="popupTitle">
     <div class="popup">
@@ -105,6 +110,9 @@
       <h1 id="popupTitle">The Coil is sealed</h1>
       <p>The Serpent's Coil is currently under maintenance.<br>Please remain calm. The archive is still listening.</p>
       <a class="btn" href="./index.html">Return</a>
+      <div class="gate">
+        <a class="btn btn-archive" href="./archive.html">Open the Archive</a>
+      </div>
     </div>
   </div>
 </body>
